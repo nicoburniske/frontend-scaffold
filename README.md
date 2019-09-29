@@ -1,11 +1,20 @@
-# resume-app
+# c4cnotetutorial
 
-> A Vue.js project
+> Code for Community Scaffold
 
 ## Build Setup
 
+c4c startup
+1. Run 'npm install' to install dependencies
+2. Run 'npm run dev' to start server
+3. Your vue files probably look bad, so install 'vetur' which your ide should recommend so 
+that your computer recoginizes the template format
+3. cmdline: git status to check that your connected to the repo
+4. cmdline: git checkout -b "[your-name]-first-look" to create your own branch in 
+github to play around with
+
 ``` bash
-# install dependencies
+# install dependencies 
 npm install
 
 # serve with hot reload at localhost:8080

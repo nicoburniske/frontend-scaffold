@@ -1,6 +1,9 @@
 <template>
-  <div class="form">
-    <h3>Notes Form</h3>
+  <div class="form" v-bind:class="{edit: isEditForm}" >
+
+    <h3 v-if="isEditForm">Edit Note</h3>
+    <h3 v-else>Notes Form</h3>
+
     <p>Title:</p>
     <textarea
       v-model="note.title"
@@ -57,7 +60,7 @@ export default {
     editNote: {
         immediate: true,
         handler() {
-            this.note = Object.assign({}, this.editProp);
+            this.note = Object.assign({}, this.editNote);
         }
     },
     noteVerification: function(newNoteVerification) {
@@ -111,9 +114,8 @@ export default {
       if (this.noteVerification === true) {
           console.log('working')
           if (this.isEditForm) {
-            console.log(this.note);
-            console.log(this.editNoteIndex);
-            this.$emit('editNoteSaved', this.note, this.editNoteIndex);
+            console.log("Editing note", this.editNoteIndex);
+            this.$emit('edit-note-saved', this.note, this.editNoteIndex);
           } else {
             this.$emit("saveNote", this.note);
             this.resetNote();
@@ -131,7 +133,7 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 35%; 
   align-items: center;
 
   button {
@@ -149,5 +151,9 @@ export default {
   .showInvalidItems {
     background-color: rgb(240, 187, 187);
   }
+}
+
+.edit{
+  width: 100%;
 }
 </style>

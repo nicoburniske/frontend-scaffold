@@ -12,7 +12,8 @@
                     :isEditForm="true"
                     :editNote="note"
                     :editNoteIndex="noteIndex"
-                    v-on:editNoteSaved="editNote($event)"/>
+                    v-on:edit-note-saved="editNoteSaved"
+                />
             </div>      
         </div>
     </div>
@@ -42,9 +43,9 @@ export default {
         }
     },
     methods: {
-        editNote: function(note, noteIndex) {
-            console.log('editNote in note display', noteIndex);
-            this.$emit('edit-note', note, noteIndex);
+        editNoteSaved: function(note, noteIndex){
+            console.log("Editing note", noteIndex)
+            this.$emit('edit-note-saved', note, noteIndex);
             this.editState = false;
         }
     }
@@ -52,7 +53,7 @@ export default {
 </script>
 
 <style scoped>
-.note {
+.note {   
     border: solid;
     border-radius: 1em;
     border-color: grey;

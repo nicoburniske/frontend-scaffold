@@ -8,8 +8,8 @@
             :note="note" 
             :note-index="index"
             v-on:delete-note="$emit('delete-note', $event)"
-            v-on:edit-note="$emit('edit-note', $event)"
-            />
+            v-on:edit-note-saved="editNoteSaved"
+        />
     </div>
 </template>
 
@@ -27,8 +27,18 @@ export default {
             required: true,
         },
     },
+    methods: {
+        editNoteSaved: function(note, noteIndex){
+            console.log("Editing note", noteIndex)
+            this.$emit('edit-note-saved', note, noteIndex);
+        }
+    }
 };
 </script>
 
 <style lang="less" scoped>
+  .notes{
+      display: flex;
+      flex-direction: column;
+  }
 </style>

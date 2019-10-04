@@ -4,7 +4,7 @@
         <notes-display 
             :notes="notes"
             v-on:delete-note="deleteNote($event)"
-            v-on:edit-note="editNote($event)"
+            v-on:edit-note-saved="editNoteSaved"
             />
     </div>
 </template>
@@ -27,14 +27,13 @@ export default {
         saveNote: function(note) {
             this.notes.push(note);
         },
-        editNote: function(note, noteIndex) {
-            console.log('edit note in notes');
-            console.log(noteIndex);
-            console.log(note);
-            this.notes[noteIndex] = Object.assign({}, note);
-        },
         deleteNote: function(noteIndex) {
             this.notes.splice(noteIndex, 1);
+        },
+        editNoteSaved: function(note, noteIndex){
+            this.notes.splice(noteIndex, 1, note);
+            console.log("Note", noteIndex, "has been edited")
+            
         }
     }
 };

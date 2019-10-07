@@ -130,18 +130,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+* {
+  margin: 0.5em;
+}
 .form {
+  grid-column-start: 1;
+  align-self: start;
+  justify-self: center;
+
   display: flex;
   flex-direction: column;
-  width: 35%; 
+  width: 35%;
   align-items: center;
+  margin: 1em;
 
   button {
-    width: 5em;
+    width: 6em;
+    height: 3em;
     background-color: rgb(112, 231, 235);
-    margin-top: 1em;
+    margin-top: 0.5em;
     border-radius: 0.5em;
     border: none;
+    outline: none;
+    font-family: var(--main-font);
   }
 
   .errorMessage {
@@ -153,7 +164,27 @@ export default {
   }
 }
 
-.edit{
-  width: 100%;
+.edit {
+  width: 90%;
+}
+
+textarea {
+  display: block;
+  border: 0;
+  background: white no-repeat;
+  font-size: 1.2em;
+  background-color: var(--notes-form-color);
+
+  background-image: linear-gradient(to bottom, #ddabff, #ddabff),
+    linear-gradient(to bottom, gray, gray);
+  background-size: 0 2px, 100% 1px;
+  background-position: 50% 100%, 50% 100%;
+  transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+
+input:focus,
+textarea:focus {
+  background-size: 100% 2px, 100% 1px;
+  outline: none;
 }
 </style>

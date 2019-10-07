@@ -16,9 +16,24 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+:root {
+  --main-font: "Montserrat", sans-serif;
+  --header-color: #ddabff;
+  --body-color: white;
+  --notes-form-color: #c4d2ff;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 #app {
-  margin: 3em;
+  font-family: var(--main-font);
   text-align: center;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--body-color);
 }
 </style>
+

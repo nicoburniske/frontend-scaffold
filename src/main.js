@@ -5,7 +5,6 @@ import App from './App';
 import router from './router/router';
 import store from "./store/store";
 
-
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
@@ -16,4 +15,7 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
+  mounted(){
+    store.dispatch('retrieveNotes', 3);
+  }
 });

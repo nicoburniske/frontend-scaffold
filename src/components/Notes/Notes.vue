@@ -1,42 +1,26 @@
 <template>
   <div class="center">
     <notes-form class="form" v-on:saveNote="saveNote($event)" />
-    <notes-display
-      class="notes"
-      :notes="notes"
-      v-on:delete-note="deleteNote($event)"
-      v-on:edit-note-saved="editNoteSaved"
-    />
+    <notes-display class="notes" :notes="getNotes" />
   </div>
 </template>
 
 <script>
-import NotesForm from './NotesForm/NotesForm';
-import NotesDisplay from './NoteDisplay/NotesDisplay';
+import NotesForm from "./NotesForm/NotesForm";
+import NotesDisplay from "./NoteDisplay/NotesDisplay";
+import { mapGetters } from "vuex";
+
 export default {
-    name: 'Notes',
-    components: {
-        NotesForm,
-        NotesDisplay,
-    },
-    data() {
-        return {
-            notes: [], //a note has a title and content
-        };
-    },
-    methods: {
-        saveNote: function(note) {
-            this.notes.push(note);
-        },
-        deleteNote: function(noteIndex) {
-            this.notes.splice(noteIndex, 1);
-        },
-        editNoteSaved: function(note, noteIndex){
-            this.notes.splice(noteIndex, 1, note);
-            console.log("Note", noteIndex, "has been edited")
-            
-        }
-    }
+  name: "Notes",
+  components: {
+    NotesForm,
+    NotesDisplay
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+  computed: mapGetters(["getNotes"])
 };
 </script>
 

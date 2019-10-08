@@ -1,6 +1,5 @@
 <template>
-  <div class="form" v-bind:class="{edit: isEditForm}" >
-
+  <div class="form" v-bind:class="{ edit: isEditForm }">
     <h3 v-if="isEditForm">Edit Note</h3>
     <h3 v-else>Notes Form</h3>
 
@@ -8,23 +7,31 @@
     <textarea
       v-model="note.title"
       cols="30"
-      :class="{showInvalidItems: showInvalidFormItems && !noteVerification.title}"
+      :class="{
+        showInvalidItems: showInvalidFormItems && !noteVerification.title
+      }"
     />
     <p
       v-if="showInvalidFormItems && !noteVerification.title"
       class="errorMessage"
-    >Please enter a title!</p>
+    >
+      Please enter a title!
+    </p>
     <p>Enter your note here:</p>
     <textarea
       v-model="note.content"
       rows="20"
       cols="30"
-      :class="{showInvalidItems: showInvalidFormItems && !noteVerification.content}"
+      :class="{
+        showInvalidItems: showInvalidFormItems && !noteVerification.content
+      }"
     />
     <p
       v-if="showInvalidFormItems && !noteVerification.content"
       class="errorMessage"
-    >Please enter a note!</p>
+    >
+      Please enter a note!
+    </p>
     <button @click="saveNote()">Save Note</button>
     <button @click="resetNote()" class="showInvalidItems">Clear Note</button>
   </div>
@@ -46,9 +53,9 @@ export default {
       })
     },
     editNoteIndex: {
-        type: Number,
-        default: -1,
-    },
+      type: Number,
+      default: -1
+    }
   },
   data() {
     return {
@@ -58,16 +65,16 @@ export default {
   },
   watch: {
     editNote: {
-        immediate: true,
-        handler() {
-            this.note = Object.assign({}, this.editNote);
-        }
+      immediate: true,
+      handler() {
+        this.note = Object.assign({}, this.editNote);
+      }
     },
     noteVerification: function(newNoteVerification) {
       if (newNoteVerification === true) {
         this.showInvalidFormItems = false;
       }
-    },
+    }
   },
   computed: {
     // This probably isn't the best idea to have a computed function here because
@@ -112,15 +119,18 @@ export default {
     },
     saveNote: function() {
       if (this.noteVerification === true) {
-          console.log('working')
-          if (this.isEditForm) {
-            console.log("Editing note", this.editNoteIndex);
-            this.$emit('edit-note-saved', this.note, this.editNoteIndex);
-          } else {
-            this.$emit("saveNote", this.note);
-            this.resetNote();
-          }
-        
+        console.log("working");
+        if (this.isEditForm) {
+          console.log("Editing note", this.editNoteIndex);
+          this.$store.commit("editNoteSaved", {
+            note: this.note,
+            index: this.editNoteIndex
+          });
+          this.$emit("edit-note-saved");
+        } else {
+          this.$store.commit("saveNote", this.note);
+          this.resetNote();
+        }
       } else {
         this.showInvalidFormItems = true;
       }

@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import NotesForm from "./NotesForm/NotesForm";
-import NotesDisplay from "./NoteDisplay/NotesDisplay";
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
+import NotesForm from './NotesForm/NotesForm';
+import NotesDisplay from './NoteDisplay/NotesDisplay';
 
 export default {
-  name: "Notes",
+  name: 'Notes',
   components: {
     NotesForm,
-    NotesDisplay
+    NotesDisplay,
   },
   data() {
     return {};
   },
   methods: {},
-  computed: mapGetters(["getNotes"])
+  computed: mapGetters(['getNotes']),
 };
 </script>
 

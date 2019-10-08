@@ -20,35 +20,35 @@
 </template>
 
 <script>
-import NotesForm from "../NotesForm/NotesForm";
-import { mapMutations } from "vuex";
+import { mapMutations } from 'vuex';
+import NotesForm from '../NotesForm/NotesForm';
 
 export default {
-  name: "note-display",
+  name: 'note-display',
   components: {
-    NotesForm
+    NotesForm,
   },
   props: {
     note: {
       type: Object,
-      required: true
+      required: true,
     },
     noteIndex: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      editState: false
+      editState: false,
     };
   },
   methods: {
-    ...mapMutations(["deleteNote"]),
-    editNoteSaved: function() {
+    ...mapMutations(['deleteNote']),
+    editNoteSaved() {
       this.editState = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

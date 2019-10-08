@@ -12,20 +12,20 @@
 </template>
 
 <script>
-import NoteDisplay from "./NoteDisplay";
+import NoteDisplay from './NoteDisplay';
 
 export default {
-  name: "NotesDisplay",
+  name: 'NotesDisplay',
   components: {
-    NoteDisplay
+    NoteDisplay,
   },
   props: {
     notes: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

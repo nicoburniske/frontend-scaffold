@@ -39,28 +39,28 @@
 
 <script>
 export default {
-  name: "NotesForm",
+  name: 'NotesForm',
   props: {
     isEditForm: {
       type: Boolean,
-      default: false
+      default: false,
     },
     editNote: {
       type: Object,
       default: () => ({
-        title: "",
-        content: ""
-      })
+        title: '',
+        content: '',
+      }),
     },
     editNoteIndex: {
       type: Number,
-      default: -1
-    }
+      default: -1,
+    },
   },
   data() {
     return {
       note: Object,
-      showInvalidFormItems: false
+      showInvalidFormItems: false,
     };
   },
   watch: {
@@ -68,13 +68,13 @@ export default {
       immediate: true,
       handler() {
         this.note = Object.assign({}, this.editNote);
-      }
+      },
     },
-    noteVerification: function(newNoteVerification) {
+    noteVerification(newNoteVerification) {
       if (newNoteVerification === true) {
         this.showInvalidFormItems = false;
       }
-    }
+    },
   },
   computed: {
     // This probably isn't the best idea to have a computed function here because
@@ -82,17 +82,17 @@ export default {
     // this array be in data and only check if its verified when they submit. But it's
     // extremely more important to understand computed functions and their power so
     // I used one here.
-    noteVerification: function() {
+    noteVerification() {
       const verifiedObject = {
         title: false,
-        content: false
+        content: false,
       };
 
-      if (this.note.title !== "") {
+      if (this.note.title !== '') {
         verifiedObject.title = true;
       }
 
-      if (this.note.content !== "") {
+      if (this.note.content !== '') {
         verifiedObject.content = true;
       }
 
@@ -106,36 +106,38 @@ export default {
       return verifiedObject.title && verifiedObject.content
         ? true
         : verifiedObject;
-    }
+    },
   },
   methods: {
     resetNote() {
       this.note = {
         _id: Math.floor(Math.random() * Math.random() * 10000000),
-        title: "",
-        content: ""
+        title: '',
+        content: '',
       };
       this.showInvalidFormItems = false;
     },
-    saveNote: function() {
+    saveNote() {
       if (this.noteVerification === true) {
-        console.log("working");
+        // eslint-disable-next-line no-console
+        console.log('working');
         if (this.isEditForm) {
-          console.log("Editing note", this.editNoteIndex);
-          this.$store.commit("editNoteSaved", {
+          // eslint-disable-next-line no-console
+          console.log('Editing note', this.editNoteIndex);
+          this.$store.commit('editNoteSaved', {
             note: this.note,
-            index: this.editNoteIndex
+            index: this.editNoteIndex,
           });
-          this.$emit("edit-note-saved");
+          this.$emit('edit-note-saved');
         } else {
-          this.$store.commit("saveNote", this.note);
+          this.$store.commit('saveNote', this.note);
           this.resetNote();
         }
       } else {
         this.showInvalidFormItems = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

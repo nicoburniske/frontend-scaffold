@@ -13,6 +13,10 @@ export default {
   components: {
     TheNavigation,
   },
+  mounted() {
+    // put 0 if you don't want any notes to be retrieved from the api.
+    this.$store.dispatch('retrieveNotes', 3);
+  },
 };
 </script>
 

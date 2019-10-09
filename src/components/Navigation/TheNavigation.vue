@@ -20,7 +20,6 @@
   min-height: 8vh;
   background-color: var(--header-color);
   font-family: var(--main-font);
-
   .title {
     text-transform: uppercase;
     letter-spacing: 6px;
@@ -29,22 +28,21 @@
     display: flex;
     justify-content: space-around;
     width: 25%;
-  }
-  button {
-    display: block;
-    width: 5em;
-    height: 5em;
-    letter-spacing: 4px;
-    font-weight: bold;
-    background: none;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    font-family: var(--main-font);
-
-  }
-  button:hover {
-    color: white;
+    button {
+      display: block;
+      width: 5em;
+      height: 5em;
+      letter-spacing: 4px;
+      font-weight: bold;
+      background: none;
+      text-decoration: none;
+      border: none;
+      outline: none;
+      font-family: var(--main-font);
+    }
+    button:hover {
+      color: white;
+    }
   }
 }
 </style>

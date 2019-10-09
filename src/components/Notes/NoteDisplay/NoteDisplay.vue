@@ -62,6 +62,7 @@ export default {
   border-radius: 1em;
   border-color: grey;
   width: 25em;
+  margin: 0em;
 }
 button {
   font-family: var(--main-font);

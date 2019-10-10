@@ -7,7 +7,6 @@ const backendAPI = axios.create({
   headers: {},
 });
 
-
 const state = {
   notes: [],
 };
@@ -16,8 +15,7 @@ const getters = {};
 
 const mutations = {
   saveNote(state, note) {
-    // state.notes.push(note);   //is mutation the best option here?
-    state.notes = [...state.notes, note];
+    state.notes.push(note);
   },
   deleteNote(state, noteIndex) {
     state.notes.splice(noteIndex, 1);
@@ -41,19 +39,12 @@ const actions = {
       const notesRetrieved = await backendAPI.get(url);
       // eslint-disable-next-line no-console
       console.log('working');
-      const notes = notesRetrieved.data.map((note) => {
-        return {
-          title: note.title,
-          content: note.body,
-        };
-      });
-      commit('setAllNotes', notes)
-      /* notesRetrieved.data.forEach(note =>
-        commit('saveNote', {
-          title: note.title,
-          content: note.body,
-        }),
-      ) */;
+      // need to remap the key for content and omit unused fields
+      const notes = notesRetrieved.data.map(note => ({
+        title: note.title,
+        content: note.body,
+      }));
+      commit('setAllNotes', notes);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);

@@ -13,15 +13,6 @@ export default {
   components: {
     TheNavigation,
   },
-  data() {
-    return {
-      // put 0 if you don't want any notes to be retrieved from the api.
-      notesRetrieved: 3,
-    };
-  },
-  mounted() {
-    this.$store.dispatch('retrieveNotes', this.notesRetrieved);
-  },
 };
 </script>
 
@@ -32,11 +23,14 @@ export default {
   --body-color: white;
   --notes-form-color: #c4d2ff;
 }
-html,
-body {
-  margin: 0;
-  padding: 0;
+html{
+  overflow-y: scroll;
+  body {
+    margin: 0;
+    padding: 0;
 }
+}
+
 #app {
   font-family: var(--main-font);
   text-align: center;

@@ -17,13 +17,18 @@ export default {
     NotesDisplay,
   },
   data() {
-    return {};
+    return {
+      // put 0 if you don't want any notes to be retrieved from the api.
+      notesRetrieved: 3,
+    };
   },
-  methods: {},
   computed: mapState({
     notes: state => state.notes.notes,
     // mapState(['notes']), returns an object instead of an array?
   }),
+  mounted() {
+    this.$store.dispatch('retrieveNotes', this.notesRetrieved);
+  },
 };
 </script>
 

@@ -152,7 +152,7 @@ export default {
 
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 100%;
   align-items: center;
   margin: 1em;
 
@@ -174,29 +174,34 @@ export default {
   .showInvalidItems {
     background-color: rgb(240, 187, 187);
   }
-}
 
+  textarea {
+    display: block;
+    border: 0;
+    background: no-repeat;
+    font-size: 1.2em;
+    background-color: var(--notes-form-color);
+    font-family: var(--main-font);
+    font-size: 1em;
+    resize: none;
+    overflow: hidden;
+
+    background-image: linear-gradient(to bottom, #ddabff, #ddabff),
+      linear-gradient(to bottom, gray, gray);
+    background-size: 0 2px, 100% 1px;
+    background-position: 50% 100%, 50% 100%;
+    transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  }
+
+  input:focus,
+  textarea:focus {
+    background-size: 100% 2px, 100% 1px;
+    outline: none;
+  }
+}
 .edit {
-  width: 90%;
+  margin: auto;
 }
 
-textarea {
-  display: block;
-  border: 0;
-  background: white no-repeat;
-  font-size: 1.2em;
-  background-color: var(--notes-form-color);
 
-  background-image: linear-gradient(to bottom, #ddabff, #ddabff),
-    linear-gradient(to bottom, gray, gray);
-  background-size: 0 2px, 100% 1px;
-  background-position: 50% 100%, 50% 100%;
-  transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-}
-
-input:focus,
-textarea:focus {
-  background-size: 100% 2px, 100% 1px;
-  outline: none;
-}
 </style>

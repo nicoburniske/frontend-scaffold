@@ -63,6 +63,7 @@ export default {
   border-color: grey;
   width: 25em;
   margin: 0em;
+  text-align: center;
 }
 button {
   font-family: var(--main-font);

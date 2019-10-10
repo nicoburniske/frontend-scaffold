@@ -39,7 +39,11 @@ const actions = {
       const notesRetrieved = await backendAPI.get(url);
       // eslint-disable-next-line no-console
       console.log('working');
+<<<<<<< HEAD
       // need to remap the key for content and omit unused properties
+=======
+      // need to remap the key for content and omit unused fields
+>>>>>>> a7db51d0c58e4a360f3529e7e795c07bcd62c2c5
       const notes = notesRetrieved.data.map(note => ({
         title: note.title,
         content: note.body,

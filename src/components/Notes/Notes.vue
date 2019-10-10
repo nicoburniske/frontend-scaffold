@@ -1,12 +1,12 @@
 <template>
   <div class="center">
     <notes-form class="form" v-on:saveNote="saveNote($event)" />
-    <notes-display class="notes" :notes="getNotes" />
+    <notes-display class="notes" :notes="notes" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import NotesForm from './NotesForm/NotesForm';
 import NotesDisplay from './NoteDisplay/NotesDisplay';
 
@@ -20,7 +20,10 @@ export default {
     return {};
   },
   methods: {},
-  computed: mapGetters(['getNotes']),
+  computed: mapState({
+    notes: state => state.notes.notes,
+    // mapState(['notes']), returns an object instead of an array?
+  }),
 };
 </script>
 

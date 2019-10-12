@@ -5,7 +5,7 @@
         <h4>Title: {{ note.title }}</h4>
         <p>{{ note.content }}</p>
         <button @click="editState = true">Edit</button>
-        <button @click="deleteNote(noteIndex)">Delete</button>
+        <button @click="deleteNote(note.id)">Delete</button>
       </div>
       <div v-else>
         <notes-form
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import NotesForm from '../NotesForm/NotesForm';
 
 export default {
@@ -44,7 +44,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['deleteNote']),
+    ...mapActions(['deleteNote']),
     editNoteSaved() {
       this.editState = false;
     },

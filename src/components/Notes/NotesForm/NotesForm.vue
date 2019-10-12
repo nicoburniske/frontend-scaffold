@@ -130,7 +130,7 @@ export default {
           });
           this.$emit('edit-note-saved');
         } else {
-          this.$store.commit('saveNote', this.note);
+          this.$store.dispatch('createNote', this.note);
           this.resetNote();
         }
       } else {

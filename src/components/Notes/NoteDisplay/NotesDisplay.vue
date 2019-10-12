@@ -4,7 +4,7 @@
     <h5 v-if="notes.length === 0">Start taking some notes!</h5>
     <note-display
       v-for="(note, index) in notes"
-      :key="note._id"
+      :key="note.id"
       :note="note"
       :note-index="index"
     />

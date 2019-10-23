@@ -1,11 +1,7 @@
 <template>
     <div class="center">
-        <notes-form v-on:saveNote="saveNote($event)"/>
-        <notes-display 
-            :notes="notes"
-            v-on:delete-note="deleteNote($event)"
-            v-on:edit-note="editNote($event)"
-            />
+        <notes-form />
+        <notes-display />
     </div>
 </template>
 
@@ -17,25 +13,6 @@ export default {
     components: {
         NotesForm,
         NotesDisplay,
-    },
-    data() {
-        return {
-            notes: [], //a note has a title and content
-        };
-    },
-    methods: {
-        saveNote: function(note) {
-            this.notes.push(note);
-        },
-        editNote: function(note, noteIndex) {
-            console.log('edit note in notes');
-            console.log(noteIndex);
-            console.log(note);
-            this.notes[noteIndex] = Object.assign({}, note);
-        },
-        deleteNote: function(noteIndex) {
-            this.notes.splice(noteIndex, 1);
-        }
     }
 };
 </script>

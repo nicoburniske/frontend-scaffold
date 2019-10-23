@@ -7,8 +7,6 @@
             :key="note._id" 
             :note="note" 
             :note-index="index"
-            v-on:delete-note="$emit('delete-note', $event)"
-            v-on:edit-note="$emit('edit-note', $event)"
             />
     </div>
 </template>
@@ -21,12 +19,11 @@ export default {
     components: {
         NoteDisplay
     },
-    props: {
-        notes: {
-            type: Array,
-            required: true,
-        },
-    },
+    computed: {
+        notes: function () {
+            return this.$store.getters.allNotes;
+        } 
+    }
 };
 </script>
 

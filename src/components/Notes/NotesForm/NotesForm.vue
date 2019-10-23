@@ -109,13 +109,15 @@ export default {
     },
     saveNote: function() {
       if (this.noteVerification === true) {
-          console.log('working')
           if (this.isEditForm) {
-            console.log(this.note);
-            console.log(this.editNoteIndex);
-            this.$emit('editNoteSaved', this.note, this.editNoteIndex);
+            this.$store.commit('notes/editNote', {
+              note: this.note,
+              noteIndex: this.editNoteIndex,
+            })
           } else {
-            this.$emit("saveNote", this.note);
+            this.$store.commit('notes/saveNote', {
+              note: this.note
+            });
             this.resetNote();
           }
         

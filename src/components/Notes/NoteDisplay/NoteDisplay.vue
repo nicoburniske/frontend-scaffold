@@ -11,8 +11,7 @@
                 <notes-form 
                     :isEditForm="true"
                     :editNote="note"
-                    :editNoteIndex="noteIndex"
-                    v-on:editNoteSaved="editNote($event)"/>
+                    :editNoteIndex="noteIndex" />
             </div>      
         </div>
     </div>
@@ -43,8 +42,10 @@ export default {
     },
     methods: {
         editNote: function(note, noteIndex) {
-            console.log('editNote in note display', noteIndex);
-            this.$emit('edit-note', note, noteIndex);
+            this.$store.commit('notes/editNote', {
+                note: note,
+                noteIndex: noteIndex,
+            })
             this.editState = false;
         }
     }

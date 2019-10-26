@@ -1,7 +1,7 @@
 <template>
     <div class="center">
         <notes-form v-on:saveNote="saveNote($event)"/>
-        <notes-display 
+        <notes-display
             :notes="notes"
             v-on:delete-note="deleteNote($event)"
             v-on:edit-note-saved="editNoteSaved"
@@ -12,30 +12,31 @@
 <script>
 import NotesForm from './NotesForm/NotesForm';
 import NotesDisplay from './NoteDisplay/NotesDisplay';
+
 export default {
-    name: 'Notes',
-    components: {
-        NotesForm,
-        NotesDisplay,
+  name: 'Notes',
+  components: {
+    NotesForm,
+    NotesDisplay,
+  },
+  data() {
+    return {
+      notes: [], // a note has a title and content
+    };
+  },
+  methods: {
+    saveNote(note) {
+      this.notes.push(note);
     },
-    data() {
-        return {
-            notes: [], //a note has a title and content
-        };
+    deleteNote(noteIndex) {
+      this.notes.splice(noteIndex, 1);
     },
-    methods: {
-        saveNote: function(note) {
-            this.notes.push(note);
-        },
-        deleteNote: function(noteIndex) {
-            this.notes.splice(noteIndex, 1);
-        },
-        editNoteSaved: function(note, noteIndex){
-            this.notes.splice(noteIndex, 1, note);
-            console.log("Note", noteIndex, "has been edited")
-            
-        }
-    }
+    editNoteSaved(note, noteIndex) {
+      this.notes.splice(noteIndex, 1, note);
+      // eslint-disable-next-line no-console
+      console.log('Note', noteIndex, 'has been edited');
+    },
+  },
 };
 </script>
 

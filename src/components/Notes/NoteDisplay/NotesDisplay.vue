@@ -2,10 +2,10 @@
     <div>
         <h3>Your notes:</h3>
         <h5 v-if="notes.length === 0">Start taking some notes!</h5>
-        <note-display 
-            v-for="(note, index) in notes" 
-            :key="note._id" 
-            :note="note" 
+        <note-display
+            v-for="(note, index) in notes"
+            :key="note._id"
+            :note="note"
             :note-index="index"
             v-on:delete-note="$emit('delete-note', $event)"
             v-on:edit-note-saved="editNoteSaved"
@@ -17,22 +17,23 @@
 import NoteDisplay from './NoteDisplay';
 
 export default {
-    name: 'NotesDisplay',
-    components: {
-        NoteDisplay
+  name: 'NotesDisplay',
+  components: {
+    NoteDisplay,
+  },
+  props: {
+    notes: {
+      type: Array,
+      required: true,
     },
-    props: {
-        notes: {
-            type: Array,
-            required: true,
-        },
+  },
+  methods: {
+    editNoteSaved(note, noteIndex) {
+      // eslint-disable-next-line no-console
+      console.log('Editing note', noteIndex);
+      this.$emit('edit-note-saved', note, noteIndex);
     },
-    methods: {
-        editNoteSaved: function(note, noteIndex){
-            console.log("Editing note", noteIndex)
-            this.$emit('edit-note-saved', note, noteIndex);
-        }
-    }
+  },
 };
 </script>
 

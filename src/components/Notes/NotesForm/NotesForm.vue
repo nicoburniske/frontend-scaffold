@@ -131,6 +131,7 @@ export default {
           this.$emit('edit-note-saved');
         } else {
           this.$store.commit('saveNote', this.note);
+
           this.resetNote();
         }
       } else {
@@ -202,6 +203,4 @@ export default {
 .edit {
   margin: auto;
 }
-
-
 </style>

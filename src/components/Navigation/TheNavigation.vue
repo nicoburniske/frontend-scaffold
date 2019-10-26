@@ -1,28 +1,48 @@
 <template>
-    <div class="header">
-        <router-link to="/" tag="button">Home</router-link>
-        <router-link to="/journal" tag="button">Journal</router-link>
-        <router-link to="/notes" tag="button">Notes</router-link>
+  <div class="header">
+    <div class="title">
+      <router-link to="/" tag="h3">C4C Scaffold</router-link>
     </div>
+
+    <div class="navlinks">
+      <router-link to="/" tag="button">Home</router-link>
+      <router-link to="/journal" tag="button">Journal</router-link>
+      <router-link to="/notes" tag="button">Notes</router-link>
+    </div>
+  </div>
 </template>
 
 <style lang="less" scoped>
-    .header {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        background-color: rgb(192, 189, 189);
-        height: 5em;
-        border-radius: 0.5em;
-        padding: 0em 1.5em;
-
-        button {
-            width: 6.5em;
-            height: 3em;
-            margin: 0em 0.75em;
-            border-radius: 0.5em;
-            background-color: rgb(112, 231, 235);
-            border: none;
-        }
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 8vh;
+  background-color: var(--header-color);
+  font-family: var(--main-font);
+  .title {
+    text-transform: uppercase;
+    letter-spacing: 6px;
+  }
+  .navlinks {
+    display: flex;
+    justify-content: space-around;
+    width: 25%;
+    button {
+      display: block;
+      width: 5em;
+      height: 5em;
+      letter-spacing: 4px;
+      font-weight: bold;
+      background: none;
+      text-decoration: none;
+      border: none;
+      outline: none;
+      font-family: var(--main-font);
     }
+    button:hover {
+      color: white;
+    }
+  }
+}
 </style>

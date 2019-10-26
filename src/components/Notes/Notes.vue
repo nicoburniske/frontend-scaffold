@@ -1,15 +1,12 @@
 <template>
-    <div class="center">
-        <notes-form v-on:saveNote="saveNote($event)"/>
-        <notes-display
-            :notes="notes"
-            v-on:delete-note="deleteNote($event)"
-            v-on:edit-note-saved="editNoteSaved"
-            />
-    </div>
+  <div class="center">
+    <notes-form class="form" v-on:saveNote="saveNote($event)" />
+    <notes-display class="notes" :notes="notes" />
+  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import NotesForm from './NotesForm/NotesForm';
 import NotesDisplay from './NoteDisplay/NotesDisplay';
 
@@ -21,27 +18,23 @@ export default {
   },
   data() {
     return {
-      notes: [], // a note has a title and content
+      // put 0 if you don't want any notes to be retrieved from the api.
+      notesRetrieved: 3,
     };
   },
-  methods: {
-    saveNote(note) {
-      this.notes.push(note);
-    },
-    deleteNote(noteIndex) {
-      this.notes.splice(noteIndex, 1);
-    },
-    editNoteSaved(note, noteIndex) {
-      this.notes.splice(noteIndex, 1, note);
-      // eslint-disable-next-line no-console
-      console.log('Note', noteIndex, 'has been edited');
-    },
+  computed: mapState({
+    notes: state => state.notes.notes,
+    // mapState(['notes']), returns an object instead of an array?
+  }),
+  mounted() {
+    this.$store.dispatch('retrieveNotes', this.notesRetrieved);
   },
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .center {
-  display: -webkit-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 </style>

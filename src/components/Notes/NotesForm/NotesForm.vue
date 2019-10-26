@@ -1,6 +1,5 @@
 <template>
-  <div class="form" v-bind:class="{edit: isEditForm}" >
-
+  <div class="form" v-bind:class="{ edit: isEditForm }">
     <h3 v-if="isEditForm">Edit Note</h3>
     <h3 v-else>Notes Form</h3>
 
@@ -8,23 +7,31 @@
     <textarea
       v-model="note.title"
       cols="30"
-      :class="{showInvalidItems: showInvalidFormItems && !noteVerification.title}"
+      :class="{
+        showInvalidItems: showInvalidFormItems && !noteVerification.title
+      }"
     />
     <p
       v-if="showInvalidFormItems && !noteVerification.title"
       class="errorMessage"
-    >Please enter a title!</p>
+    >
+      Please enter a title!
+    </p>
     <p>Enter your note here:</p>
     <textarea
       v-model="note.content"
       rows="20"
       cols="30"
-      :class="{showInvalidItems: showInvalidFormItems && !noteVerification.content}"
+      :class="{
+        showInvalidItems: showInvalidFormItems && !noteVerification.content
+      }"
     />
     <p
       v-if="showInvalidFormItems && !noteVerification.content"
       class="errorMessage"
-    >Please enter a note!</p>
+    >
+      Please enter a note!
+    </p>
     <button @click="saveNote()">Save Note</button>
     <button @click="resetNote()" class="showInvalidItems">Clear Note</button>
   </div>
@@ -117,9 +124,14 @@ export default {
         if (this.isEditForm) {
           // eslint-disable-next-line no-console
           console.log('Editing note', this.editNoteIndex);
-          this.$emit('edit-note-saved', this.note, this.editNoteIndex);
+          this.$store.commit('editNoteSaved', {
+            note: this.note,
+            index: this.editNoteIndex,
+          });
+          this.$emit('edit-note-saved');
         } else {
-          this.$emit('saveNote', this.note);
+          this.$store.commit('saveNote', this.note);
+
           this.resetNote();
         }
       } else {
@@ -131,18 +143,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+* {
+  margin: 0.5em;
+}
 .form {
+  grid-column-start: 1;
+  align-self: start;
+  justify-self: center;
+
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 100%;
   align-items: center;
+  margin: 1em;
 
   button {
-    width: 5em;
+    width: 6em;
+    height: 3em;
     background-color: rgb(112, 231, 235);
-    margin-top: 1em;
+    margin-top: 0.5em;
     border-radius: 0.5em;
     border: none;
+    outline: none;
+    font-family: var(--main-font);
   }
 
   .errorMessage {
@@ -152,9 +175,32 @@ export default {
   .showInvalidItems {
     background-color: rgb(240, 187, 187);
   }
-}
 
-.edit{
-  width: 100%;
+  textarea {
+    display: block;
+    border: 0;
+    background: no-repeat;
+    font-size: 1.2em;
+    background-color: var(--notes-form-color);
+    font-family: var(--main-font);
+    font-size: 1em;
+    resize: none;
+    overflow: hidden;
+
+    background-image: linear-gradient(to bottom, #ddabff, #ddabff),
+      linear-gradient(to bottom, gray, gray);
+    background-size: 0 2px, 100% 1px;
+    background-position: 50% 100%, 50% 100%;
+    transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  }
+
+  input:focus,
+  textarea:focus {
+    background-size: 100% 2px, 100% 1px;
+    outline: none;
+  }
+}
+.edit {
+  margin: auto;
 }
 </style>

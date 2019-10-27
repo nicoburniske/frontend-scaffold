@@ -2,6 +2,7 @@
   <div class="center">
     <notes-form class="form" v-on:saveNote="saveNote($event)" />
     <notes-display class="notes" :notes="notes" />
+    <v-dialog/>
   </div>
 </template>
 

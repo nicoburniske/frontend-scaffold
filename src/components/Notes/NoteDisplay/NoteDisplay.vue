@@ -5,7 +5,7 @@
         <h4>Title: {{ note.title }}</h4>
         <p>{{ note.content }}</p>
         <button @click="editState = true">Edit</button>
-        <button @click="deleteNote(noteIndex)">Delete</button>
+        <button @click="confirmDeleteNote(noteIndex)">Delete</button>
       </div>
       <div v-else>
         <notes-form
@@ -22,6 +22,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import NotesForm from '../NotesForm/NotesForm';
+import deleteNote from '../../../store/modules/notes';
 
 export default {
   name: 'note-display',
@@ -45,6 +46,30 @@ export default {
   },
   methods: {
     ...mapMutations(['deleteNote']),
+    confirmDeleteNote(state, noteIndex) {
+      this.$modal.show('dialog', {
+      title: 'Alert!',
+      text: 'Are you sure you would like to delete?',
+      buttons: [
+        {
+          title: 'Confirm',
+          handler: () => { 
+            alert('Hello');
+            this.$modal.hide('dialog');
+          },
+        },
+        {
+          title: '',       // Button title
+          default: true,    // Will be triggered by default if 'Enter' pressed.
+          handler: () => {} // Button click handler
+        },
+        {
+          title: 'Cancel',
+        },
+      ], 
+      'before-close': (event) => { console.log('this will be called before the modal closes'); },
+    });
+    },
     editNoteSaved() {
       this.editState = false;
     },

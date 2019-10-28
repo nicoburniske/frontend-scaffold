@@ -8,6 +8,7 @@
       <router-link to="/" tag="button">Home</router-link>
       <router-link to="/journal" tag="button">Journal</router-link>
       <router-link to="/notes" tag="button">Notes</router-link>
+      <router-link to="/login" tag="button">Login</router-link>
     </div>
   </div>
 </template>

@@ -36,17 +36,19 @@ export default {
     resetSubmit() {
       this.submitted = false;
     },
-    submit() {
+    async submit() {
       this.submitted = true;
       if (this.username && this.password) {
         let user = {username: this.username, password: this.password};
-        this.$store.dispatch('login', user)
-          // redirects user to new page once logged in
-          .then(() => this.$router.push('/'))
+        try {
+          await this.$store.dispatch('login', user);
+          this.resetInput();
+          this.$router.push('/');
+        } catch (error) {
           // eslint-disable-next-line no-console
-          .catch(error => console.log(error));
+          console.log(error + " from login component");
+        }
       }
-      this.resetInput();
     },
     register() {
 

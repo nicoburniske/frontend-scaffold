@@ -49,7 +49,7 @@ const actions = {
     if (response.status === 200) {
       localStorage.setItem('token', response.data.token)
       context.commit('authSuccess', response.data.token, response.data.user);
-    } else if (response.status === 400) {
+    } else {
       // eslint-disable-next-line no-console
       console.log(error, 'Invalid Login');
       context.commit('authError'); 

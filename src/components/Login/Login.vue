@@ -1,57 +1,32 @@
 <template>
   <div>
-    <h2>Login</h2>
-    <div>
-      <div>
-        <!-- eslint-disable-next-line max-len -->
-        <input v-model="username" @focus="resetSubmit" type="text" placeholder="Username or Email" />
-      </div>
-      <div>
-        <input v-model="password" @focus="resetSubmit" type="password" placeholder="Password"/>
-      </div>
-
-      <div v-show="(!username || !password) && submitted"> Invalid Input </div>
-
-      <button @click="submit"> Login </button>
-      <button @click="register"> Register </button>
-
-    </div>
+    <login-form v-if="selectedForm===1" @sign-up="signup"/>
+    <signup-form v-else-if="selectedForm===2" @login="login"/>
   </div>
 </template>
 
 <script>
+import LoginForm from './LoginForm'
+import SignupForm from './SignupForm'
+
 export default {
+  // should we be using nested routes instead of int selectedForm?
+  name: 'Login',
+  components: {
+    'login-form': LoginForm,
+    'signup-form': SignupForm,
+  },
   data() {
     return {
-      username: '',
-      password: '',
-      submitted: false,
+      selectedForm: 1,
     };
   },
   methods: {
-    resetInput() {
-      this.username = '';
-      this.password = '';
+    signup() {
+      this.selectedForm = 2;
     },
-    resetSubmit() {
-      this.submitted = false;
-    },
-    async submit() {
-      this.submitted = true;
-      if (this.username && this.password) {
-        let user = {username: this.username, password: this.password};
-        try {
-          await this.$store.dispatch('login', user);
-          this.resetInput();
-          this.$router.push('/');
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(error + " from login component");
-        }
-      }
-    },
-    register() {
-
+    login() {
+      this.selectedForm = 1;
     },
   },
 };

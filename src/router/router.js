@@ -44,7 +44,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // if any of the routes exposed by the route object 'to' are secure
   if (to.matched.some(record => record.meta.secure)) {
-    if (Store.getters.isLoggedIn) {
+    if (Store.state.isAuthenticated) {
       next();
       return;
     }

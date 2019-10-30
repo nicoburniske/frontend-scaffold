@@ -86,37 +86,20 @@ Body
 
 ## `DELETE /login`
 
-> Used for logging out.
+> Used for logging out. 
 
 ### __Request__
-
-Headers: 
-  ``` json
-  X-Access-Token: STRING
-  ```
 
 Body:
   ```json
   {
-   "refresh_token" : STRING
+    "access_token" : STRING,
+    "refresh_token" : STRING
   }
   ```
-  
-Example:
 
 ### __Responses__ 
 
 #### `204 No Content`
 > Logout successful.
 
-
-#### `401 Unauthorized`
-> Logout unsuccessful. 
-
-Body
-```JSON
-{
-  "status" : "BAD REQUEST",
-  "reason" : STRING
-}
-```

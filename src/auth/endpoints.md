@@ -7,9 +7,6 @@ Note: The same JWT was used for all examples, however in the implementation all 
 Used for logging in.
 
 ### __Request__
-Method: POST
-
-Route: /login
 
 Headers: 
   ```json
@@ -33,10 +30,11 @@ Example:
 
 
 ### __Responses__ 
-__Success__  
-The username/password combination is valid
+ 
 
 #### `201 Created`
+
+The username/password combination is valid.
 
 Includes distinct access and refresh tokens for the given user. 
 -  Body: 
@@ -47,11 +45,8 @@ Includes distinct access and refresh tokens for the given user.
 }
 ```
 
-__Failure__
-
-The username/password combination is invalid
-
 #### `401 Unauthorized`
+The username/password combination is invalid
 - Body
 ```JSON
 {
@@ -65,9 +60,6 @@ The username/password combination is invalid
 Used for getting a new access token
 
 ### __Request__
-Method: POST
-
-Route: /login/refresh
 
 Headers: 
   ```json
@@ -76,7 +68,7 @@ Headers:
 Body:
   ```
   refresh_token: STRING (required)
-    - the refresh token that was granted upon succesful login.
+    - the refresh token that was granted upon successful login.
   ```
 
 Example:
@@ -88,10 +80,9 @@ Example:
 
 
 ### __Responses__ 
-__Success__  
-The refresh token is valid and has not yet expired.
 
 #### `201 Created`
+The refresh token is valid and has not yet expired.
 
 Includes a new unique access_token.
 -  Body: 
@@ -101,11 +92,9 @@ Includes a new unique access_token.
 }
 ```
 
-__Failure__
-
+#### `401 Unauthorized`
 The refresh token is invalid
 
-#### `401 Unauthorized`
 - Body
 ```JSON
 {
@@ -119,9 +108,6 @@ The refresh token is invalid
 Used for logging out.
 
 ### __Request__
-Method: DELETE
-
-Route: /login
 
 Headers: 
   ``` json
@@ -141,17 +127,13 @@ Example:
   }
 ```
 ### __Responses__ 
-__Success__  
-
-Logout successful
 
 #### `204 No Content`
+Logout successful
 
-__Failure__  
-
-Logout unsuccessful. 
 
 #### `401 Unauthorized`
+Logout unsuccessful. 
 - Body
 ```JSON
 {

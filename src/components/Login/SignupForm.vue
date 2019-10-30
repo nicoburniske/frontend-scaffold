@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2> Signup </h2>
     <div>
       <div>
          <input v-model="username" @focus="resetSubmit" type="text" placeholder="Username" >

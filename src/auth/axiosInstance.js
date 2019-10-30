@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
   },
 });
 
+// use response interceptor for silent refresh
 axiosInstance.interceptors.response.use(
   response => response,
   async (error) => {
@@ -33,11 +34,14 @@ axiosInstance.interceptors.response.use(
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
+        axiosInstance.defaults.headers['X-Access-Token'] = '';
         store.commit('authFailure', TOKEN_REFRESH_FAILURE); // todo: logging error message
+        store.commit('logout');
       }
     }
     return Promise.reject(error);
   },
 );
+
 
 export default axiosInstance;

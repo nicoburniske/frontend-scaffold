@@ -36,6 +36,8 @@ const mutations = {
     state.token = '';
     state.user = {};
     state.isAuthenticated = false;
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   },
 };
 

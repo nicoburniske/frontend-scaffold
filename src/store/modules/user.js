@@ -58,6 +58,7 @@ const actions = {
         context.commit('authSuccess', { status: LOGIN_SUCCESS,
           access: response.data.access_token,
           refresh: response.data.refresh_token });
+        axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
         // context.dispatch('getUser'); // not implemented yet
       } else {
         context.commit('authFailure', LOGIN_FAILURE);
@@ -79,6 +80,7 @@ const actions = {
           { status: SIGNUP_SUCCESS,
             access: response.data.access_token,
             refresh: response.data.refresh_token });
+        axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
         // context.dispatch('getUser'); // not implemented yet
       }
     } catch (error) {

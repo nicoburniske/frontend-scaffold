@@ -1,6 +1,9 @@
 // API urls
 export const API_DOMAIN = '';
-export const API_LOGIN = '';
+export const API_LOGIN = '/login';
+export const API_REFRESH_TOKEN = '/login/refresh';
+export const API_SIGNUP = '/signup';
+
 
 // Request states
 export const TOKEN_REFRESH_REQUEST = 'TOKEN_REFRESH_REQUEST';

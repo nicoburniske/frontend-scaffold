@@ -1,11 +1,11 @@
 /* eslint-disable no-shadow */
 import axiosInstance from '../../auth/axiosInstance';
 import { API_LOGIN,
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SIGNUP_REQUEST, API_SIGNUP, SIGNUP_FAILURE, SIGNUP_SUCCESS } from '../../auth/constants';
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SIGNUP_REQUEST, API_SIGNUP, SIGNUP_FAILURE, SIGNUP_SUCCESS, LOGOUT_REQUEST, LOGOUT_FAILURE, LOGOUT_SUCCESS } from '../../auth/constants';
 
 const state = {
   status: '',
-  access_token: '', // token stored in state is access token. Not sure if necessary.
+  access_token: '',
   refresh_token: localStorage.getItem('refresh_token') || '',
   user: {},
   isAuthenticated: false,
@@ -38,8 +38,8 @@ const mutations = {
     state.access_token = payload.access;
     state.isAuthenticated = true;
   },
-  logOut(state) {
-    state.status = '';
+  logout(state) {
+    state.status = LOGOUT_SUCCESS;
     state.access_token = '';
     state.refresh_token = '';
     state.user = {};
@@ -87,7 +87,23 @@ const actions = {
       // eslint-disable-next-line no-console
       console.log(error);
       context.commit('authFailure', SIGNUP_FAILURE);
-      throw new Error('Signup Failed ');
+      throw new Error('Signup Failed');
+    }
+  },
+  async logout(context) {
+    context.commit('authRequest', LOGOUT_REQUEST);
+    try {
+      const response = await axiosInstance.delete(API_LOGIN,
+        { access_token: context.state.access_token,
+          refresh_token: context.state.refresh_token });
+      if (response.status === 204) {
+        context.commit('logout');
+      } else {
+        throw new Error('Logout Failed');
+      }
+    } catch (error) {
+      context.commit('authError', LOGOUT_FAILURE);
+      throw new Error('Logout Failed');
     }
   },
   /**

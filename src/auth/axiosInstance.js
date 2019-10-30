@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
       try {
         // should I have a check for status code?
         const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refreshToken });
-        store.commit('refreshSuccess', { state: TOKEN_REFRESH_SUCCESS, access: data.access_token });
+        store.commit('refreshSuccess', { status: TOKEN_REFRESH_SUCCESS, access: data.access_token });
         // all future requests will use the new access token.
         axiosInstance.defaults.headers['X-Access-Token'] = data.access_token;
         // redo current failed request with new access token
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
         console.log(err);
         axiosInstance.defaults.headers['X-Access-Token'] = '';
         store.commit('authFailure', TOKEN_REFRESH_FAILURE); // todo: logging error message
-        store.commit('logout');
+        store.dispatch('logout');
       }
     }
     return Promise.reject(error);

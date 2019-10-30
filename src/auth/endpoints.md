@@ -1,101 +1,82 @@
 # Login and Token Endpoints
 
-Note: The same JWT was used for all examples, however in the implementation all JWT's should be unique. The refresh token should also never be the same as the access token.
-
-## `POST /login`
-
-Used for logging in.
-
-### __Request__
-
-Headers: 
+Common Headers: 
   ```json
   Content-Type: application/json
   ```
+
+## `POST /login`
+
+>Used for logging in.
+
+### __Request__
+
 Body:
+  ```json
+    {
+    "username" : EMAIL or USERNAME,
+    "password" : STRING
+    }
   ```
-  username: STRING (required)
-    - Username or email of the user logging in.
-  password: STRING (required)
-    - Password of user logging in.
-  ```
+  An EMAIL is a string representing a user's email.
 
-Example:
-```json
-  {
-  "username" : "anemail@email.com",
-  "password" : "password"
-  }
-```
-
-
+  A USERNAME is a string representing a user's username.
+  
 ### __Responses__ 
  
 
 #### `201 Created`
 
-The username/password combination is valid.
+>The username/password combination is valid. Includes distinct access and refresh tokens for the given user. 
 
-Includes distinct access and refresh tokens for the given user. 
--  Body: 
+Body: 
 ```json
 {
-  "access_token"  :"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  "refresh_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  "access_token"  : STRING,
+  "refresh_token" : STRING
 }
 ```
 
 #### `401 Unauthorized`
-The username/password combination is invalid
-- Body
+> The username/password combination is invalid.
+
+Body
 ```JSON
 {
   "status" : "BAD REQUEST",
-  "reason" : STRING
+  "reason" : STRING,
 }
 ```
 
 ## `POST /login/refresh`
 
-Used for getting a new access token
+> Used for getting a new access token.
 
 ### __Request__
 
-Headers: 
-  ```json
-  Content-Type: application/json
-  ```
 Body:
+  ```json
+    {
+    "refresh_token" : STRING
+    }
   ```
-  refresh_token: STRING (required)
-    - the refresh token that was granted upon successful login.
-  ```
-
-Example:
-```json
-  {
-   "refresh_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  }
-```
-
 
 ### __Responses__ 
 
 #### `201 Created`
-The refresh token is valid and has not yet expired.
+> The refresh token is valid and has not yet expired. Response includes a new unique access_token.
 
-Includes a new unique access_token.
--  Body: 
+Body: 
 ```json
 {
-  "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+  "access_token" : STRING,
 }
 ```
 
 #### `401 Unauthorized`
-The refresh token is invalid
+> The refresh token is invalid.
 
-- Body
+Body
 ```JSON
 {
   "status": "BAD REQUEST",
@@ -105,36 +86,34 @@ The refresh token is invalid
 
 ## `DELETE /login`
 
-Used for logging out.
+> Used for logging out.
 
 ### __Request__
 
 Headers: 
   ``` json
-  Content-Type: application/json,
   X-Access-Token: STRING
   ```
 
 Body:
   ```json
-  refresh_token: STRING (REQUIRED)
+  {
+   "refresh_token" : STRING
+  }
   ```
   
 Example:
-```json
-  {
-   "refresh_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  }
-```
+
 ### __Responses__ 
 
 #### `204 No Content`
-Logout successful
+> Logout successful.
 
 
 #### `401 Unauthorized`
-Logout unsuccessful. 
-- Body
+> Logout unsuccessful. 
+
+Body
 ```JSON
 {
   "status" : "BAD REQUEST",

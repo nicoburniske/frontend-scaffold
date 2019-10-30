@@ -5,7 +5,8 @@ import { API_LOGIN,
 
 const state = {
   status: '',
-  token: localStorage.getItem('access_token') || '', // token stored in state is access token. Not sure if necessary.
+  access_token: '', // token stored in state is access token. Not sure if necessary.
+  refresh_token: localStorage.getItem('refresh_token') || '',
   user: {},
   isAuthenticated: false,
 };
@@ -18,22 +19,29 @@ const mutations = {
   /**
    * Used to set state status to a request. Indicates a request is being made.
    */
-  authRequest(state, constant) {
-    state.status = constant;
+  authRequest(state, status) {
+    state.status = status;
     state.isAuthenticated = false;
   },
-  authSuccess(state, token, constant) {
-    state.status = constant;
-    state.token = token;
+  authSuccess(state, payload) {
+    state.status = payload.status;
+    state.access_token = payload.access;
+    state.refresh_token = payload.refresh;
     state.isAuthenticated = true;
   },
-  authFailure(state, constant) {
-    state.status = constant;
+  authFailure(state, status) {
+    state.status = status;
     state.isAuthenticated = false;
+  },
+  refreshSucess(state, payload) {
+    state.status = payload.status;
+    state.access_token = payload.access;
+    state.isAuthenticated = true;
   },
   logOut(state) {
     state.status = '';
-    state.token = '';
+    state.access_token = '';
+    state.refresh_token = '';
     state.user = {};
     state.isAuthenticated = false;
     localStorage.removeItem('access_token');
@@ -47,9 +55,9 @@ const actions = {
     try {
       const response = await axiosInstance.post(API_LOGIN, user);
       if (response.status === 201) {
-        localStorage.setItem('access_token', response.data.access_token);
-        localStorage.setItem('refresh_token', response.data.refresh_token);
-        context.commit('authSuccess', response.data.access_token, LOGIN_SUCCESS);
+        context.commit('authSuccess', { status: LOGIN_SUCCESS,
+          access: response.data.access_token,
+          refresh: response.data.refresh_token });
         // context.dispatch('getUser'); // not implemented yet
       } else {
         context.commit('authFailure', LOGIN_FAILURE);
@@ -67,9 +75,10 @@ const actions = {
     try {
       const response = await axiosInstance.post(API_SIGNUP, user);
       if (response.status === 201) {
-        localStorage.setItem('access_token', response.data.access_token);
-        localStorage.setItem('refresh_token', response.data.refresh_token);
-        context.commit('authSuccess', response.data.access_token, SIGNUP_SUCCESS);
+        context.commit('authSuccess',
+          { status: SIGNUP_SUCCESS,
+            access: response.data.access_token,
+            refresh: response.data.refresh_token });
         // context.dispatch('getUser'); // not implemented yet
       }
     } catch (error) {

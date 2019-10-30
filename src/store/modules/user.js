@@ -1,13 +1,12 @@
 /* eslint-disable no-shadow */
-import axiosInstance from '../../auth/axiosInstance'
-import { API_LOGIN, 
-  TOKEN_REFRESH_REQUEST,TOKEN_REFRESH_SUCCESS, TOKEN_REFRESH_FAILURE, 
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../../auth/constants'
+import axiosInstance from '../../auth/axiosInstance';
+import { API_LOGIN,
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../../auth/constants';
 
 const state = {
-  status : '',
-  token : localStorage.getItem('access_token') || '', // token stored in state is access token
-  user : {},
+  status: '',
+  token: localStorage.getItem('access_token') || '', // token stored in state is access token
+  user: {},
   isAuthenticated: false,
 };
 
@@ -26,21 +25,16 @@ const mutations = {
     state.isAuthenticated = true;
   },
   authFailure(state, constant) {
+    state.status = constant;
     state.status = state;
     state.isAuthenticated = false;
-  },
-  loginSuccess(state, token, user) { // can this function be removed entirely??
-    state.status = 'success';
-    state.token = token;
-    state.user = user;
-    state.isAuthenticated = true; 
   },
   logOut(state) {
     state.status = '';
     state.token = '';
     state.user = {};
     state.isAuthenticated = false;
-  }
+  },
 };
 
 const actions = {
@@ -55,25 +49,26 @@ const actions = {
         context.commit('authSuccess', response.data.access_token, LOGIN_SUCCESS);
         context.dispatch('getUser');
       } else {
-        context.commit('authFailure', LOGIN_FAILURE); 
-        throw new Error(response.status);     
-      }  
+        context.commit('authFailure', LOGIN_FAILURE);
+        throw new Error(response.status);
+      }
     } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-        context.commit('authFailure', LOGIN_FAILURE); 
-        throw new Error("Login Failed ");     
+      // eslint-disable-next-line no-console
+      console.log(error);
+      context.commit('authFailure', LOGIN_FAILURE);
+      throw new Error('Login Failed ');
     }
   },
+  /**
+    async getUser(context) {
 
-  async getUser(context) {
-    
-  }
+    },
+  * */
 };
 
 export default {
-  state, 
-  getters, 
-  mutations, 
+  state,
+  getters,
+  mutations,
   actions,
 };

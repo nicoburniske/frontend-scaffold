@@ -36,14 +36,14 @@ export default {
     async submit() {
       this.submitted = true;
       if (this.username && this.password) {
-        let user = {username: this.username, password: this.password};
+        const user = { username: this.username, password: this.password };
         try {
           await this.$store.dispatch('login', user);
           this.resetInput();
           this.$router.push('/journal'); // should be able to see journal page once authenticated
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(error + "login component");
+          console.log(`${error}login component`);
         }
       }
     },

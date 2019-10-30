@@ -27,8 +27,8 @@
   }
   .navlinks {
     display: flex;
-    justify-content: space-around;
-    width: 25%;
+    justify-content: space-between;
+    width: 45%;
     button {
       display: block;
       width: 5em;

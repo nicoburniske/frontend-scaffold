@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'X-Access-Token': localStorage.getItem('access_token'),
   },
 });
 
@@ -18,14 +17,12 @@ axiosInstance.interceptors.response.use(
     const pastRequest = error.config;
     // if unauthorized
     if (error.response.status === 401) {
-      const refreshToken = localStorage.getItem('refresh_token');
+      const refreshToken = store.state('refresh_token');
       store.commit('authRequest', TOKEN_REFRESH_REQUEST);
-
       try {
         // should I have a check for status code?
         const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refreshToken });
-        store.commit('authSuccess', data.refresh_token, TOKEN_REFRESH_SUCCESS);
-        localStorage.setItem('access_token', data.access_token);
+        store.commit('refreshSuccess', { state: TOKEN_REFRESH_SUCCESS, access: data.access_token });
         // all future requests will use the new access token.
         axiosInstance.defaults.headers['X-Access-Token'] = data.access_token;
         // redo current failed request with new access token

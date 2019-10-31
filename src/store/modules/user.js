@@ -17,27 +17,48 @@ const getters = {
 
 const mutations = {
   /**
-   * Used to set state status to a request. Indicates a request is being made.
+   * Used to set state status to a request constant. See constants.js.
    */
   authRequest(state, status) {
     state.status = status;
     state.isAuthenticated = false;
   },
+  /**
+   * Used to set the state status to a success constant. See constants.js.
+   * Payload should have the following properties
+   * - status (the specified constant describing the state of the transaction)
+   * - access (the access token)
+   * - refresh (the refresh token)
+   */
   authSuccess(state, payload) {
     state.status = payload.status;
     state.access_token = payload.access;
     state.refresh_token = payload.refresh;
     state.isAuthenticated = true;
   },
+  /**
+   * Used to set the state status to a failure constant.
+   */
   authFailure(state, status) {
     state.status = status;
     state.isAuthenticated = false;
   },
+  /**
+   * Used to initiate a silent refresh and update access_token
+   * Payload should have the following properties
+   * - status (the specified constant describing the state of the transaction)
+   * - access (the access token)
+   */
   refreshSucess(state, payload) {
     state.status = payload.status;
     state.access_token = payload.access;
     state.isAuthenticated = true;
   },
+
+  /**
+   * Used to indicate a user has logged out. 
+   * Resets entire vuex module and removes all tokens from localstorage.
+   */
   logout(state) {
     state.status = LOGOUT_SUCCESS;
     state.access_token = '';
@@ -59,7 +80,7 @@ const actions = {
           access: response.data.access_token,
           refresh: response.data.refresh_token });
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
-        // context.dispatch('getUser'); // not implemented yet
+        context.commit('setUser');
       } else {
         context.commit('authFailure', LOGIN_FAILURE);
         throw new Error(response.status);
@@ -81,7 +102,7 @@ const actions = {
             access: response.data.access_token,
             refresh: response.data.refresh_token });
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
-        // context.dispatch('getUser'); // not implemented yet
+        context.commmit('setUser');
       }
     } catch (error) {
       // eslint-disable-next-line no-console

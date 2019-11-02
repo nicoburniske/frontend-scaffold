@@ -54,7 +54,7 @@ export default {
         {
           title: 'Confirm',
           handler: () => { 
-            alert('Hello');
+            this.deleteNote(noteIndex);
             this.$modal.hide('dialog');
           },
         },

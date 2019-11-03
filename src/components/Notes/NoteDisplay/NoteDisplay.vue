@@ -48,11 +48,11 @@ export default {
     ...mapMutations(['deleteNote']),
     confirmDeleteNote(state, noteIndex) {
       this.$modal.show('dialog', {
-      title: 'Alert!',
-      text: 'Are you sure you would like to delete?',
+      title: 'Confirm',
+      text: 'Are you sure you would like to delete: '+ this.note.title +'?',
       buttons: [
         {
-          title: 'Confirm',
+          title: 'Yes',
           handler: () => { 
             this.deleteNote(noteIndex);
             this.$modal.hide('dialog');
@@ -64,7 +64,7 @@ export default {
           handler: () => {} // Button click handler
         },
         {
-          title: 'Cancel',
+          title: 'No',
         },
       ], 
       'before-close': (event) => { console.log('this will be called before the modal closes'); },

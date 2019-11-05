@@ -47,6 +47,7 @@ export default {
   methods: {
     ...mapMutations(['deleteNote']),
     confirmDeleteNote(state, noteIndex) {
+      // https://github.com/euvl/vue-js-modal
       this.$modal.show('dialog', {
       title: 'Confirm',
       text: 'Are you sure you would like to delete: '+ this.note.title +'?',

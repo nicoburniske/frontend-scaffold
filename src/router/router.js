@@ -4,7 +4,7 @@ import Home from '../components/Home/Home';
 import Journal from '../components/Journal/Journal';
 import Notes from '../components/Notes/Notes';
 import Login from '../components/Login/Login';
-import Store from '../store/store';
+import store from '../store/store';
 
 Vue.use(Router);
 
@@ -44,7 +44,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // if any of the routes exposed by the route object 'to' are secure
   if (to.matched.some(record => record.meta.secure)) {
-    if (Store.state.isAuthenticated) {
+    if (store.state.user.isAuthenticated) {
       next();
       return;
     }

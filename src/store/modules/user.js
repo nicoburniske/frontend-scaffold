@@ -80,7 +80,7 @@ const actions = {
           access: response.data.access_token,
           refresh: response.data.refresh_token });
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
-        context.commit('setUser');
+        // context.commit('setUser');
       } else {
         context.commit('authFailure', LOGIN_FAILURE);
         throw new Error(response.status);
@@ -89,7 +89,7 @@ const actions = {
       // eslint-disable-next-line no-console
       console.log(error);
       context.commit('authFailure', LOGIN_FAILURE);
-      throw new Error('Login Failed ');
+      throw new Error('Login Failed');
     }
   },
   async signup(context, user) {
@@ -102,7 +102,7 @@ const actions = {
             access: response.data.access_token,
             refresh: response.data.refresh_token });
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
-        context.commmit('setUser');
+        // context.commmit('setUser');
       }
     } catch (error) {
       // eslint-disable-next-line no-console

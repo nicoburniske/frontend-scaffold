@@ -17,7 +17,7 @@ axiosInstance.interceptors.response.use(
     const pastRequest = error.config;
     // if unauthorized
     if (error.response.status === 401) {
-      const refreshToken = store.state('refresh_token');
+      const refreshToken = store.state.user.refresh_token;
       store.commit('authRequest', TOKEN_REFRESH_REQUEST);
       try {
         // should I have a check for status code?

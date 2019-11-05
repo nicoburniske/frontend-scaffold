@@ -40,6 +40,7 @@ export default {
         try {
           await this.$store.dispatch('login', user);
           this.resetInput();
+          this.resetSubmit();
           this.$router.push('/journal'); // should be able to see journal page once authenticated
         } catch (error) {
           // eslint-disable-next-line no-console

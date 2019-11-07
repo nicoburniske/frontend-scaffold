@@ -37,7 +37,6 @@ export default {
       this.submitted = true;
       if (this.username && this.password) {
         const user = { username: this.username, password: this.password };
-        console.log(user);
         try {
           await this.$store.dispatch('login', user);
           this.resetInput();

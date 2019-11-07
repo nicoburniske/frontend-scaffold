@@ -29,4 +29,3 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'; // never used
 export const PERSIST_REQUEST = 'PERSIST_REQUEST';
 export const PERSIST_SUCCESS = 'PERSIST_SUCCESS';
 export const PERSIST_FAILURE = 'PERSIST_FAILURE';
-

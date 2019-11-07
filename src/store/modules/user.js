@@ -1,10 +1,12 @@
 /* eslint-disable no-shadow */
 import axiosInstance from '../../auth/axiosInstance';
-import { API_LOGIN, API_SIGNUP, API_REFRESH_TOKEN,
+import {
+  API_LOGIN, API_SIGNUP, API_REFRESH_TOKEN,
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
   SIGNUP_REQUEST, SIGNUP_FAILURE, SIGNUP_SUCCESS,
   LOGOUT_REQUEST, LOGOUT_SUCCESS,
-  PERSIST_SUCCESS, PERSIST_REQUEST, PERSIST_FAILURE } from '../../auth/constants';
+  PERSIST_SUCCESS, PERSIST_REQUEST, PERSIST_FAILURE,
+} from '../../auth/constants';
 import { isJWTValid } from '../../auth/jwtUtils';
 import tokenService from '../../auth/tokenService';
 
@@ -100,8 +102,10 @@ const actions = {
     context.commit('authRequest', LOGOUT_REQUEST);
     try {
       const response = await axiosInstance.delete(API_LOGIN,
-        { access_token: context.state.access_token,
-          refresh_token: context.state.refresh_token });
+        {
+          access_token: context.state.access_token,
+          refresh_token: context.state.refresh_token,
+        });
       context.commit('logout');
       if (response.status !== 204) {
         throw new Error(`Logout failed with response status ${response.status}`);

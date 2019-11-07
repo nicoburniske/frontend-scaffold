@@ -1,6 +1,8 @@
 import axios from 'axios';
 import store from '../store/store';
-import { TOKEN_REFRESH_FAILURE, TOKEN_REFRESH_SUCCESS, API_DOMAIN, TOKEN_REFRESH_REQUEST, API_REFRESH_TOKEN } from './constants';
+import {
+  TOKEN_REFRESH_FAILURE, TOKEN_REFRESH_SUCCESS, API_DOMAIN, TOKEN_REFRESH_REQUEST, API_REFRESH_TOKEN,
+} from './constants';
 import tokenService from './tokenService';
 
 const axiosInstance = axios.create({

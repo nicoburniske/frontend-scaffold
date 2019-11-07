@@ -13,7 +13,7 @@ export default {
   components: {
     TheNavigation,
   },
-  beforeCreate: function () {
+  beforeCreate() {
     this.$store.dispatch('persistUser');
   },
 };
@@ -42,4 +42,3 @@ html{
   background-color: var(--body-color);
 }
 </style>
-

@@ -1,9 +1,10 @@
 import axios from 'axios';
 import store from '../store/store';
 import { TOKEN_REFRESH_FAILURE, TOKEN_REFRESH_SUCCESS, API_DOMAIN, TOKEN_REFRESH_REQUEST, API_REFRESH_TOKEN } from './constants';
+import tokenService from './tokenService';
 
 const axiosInstance = axios.create({
-  baseURL: API_DOMAIN,
+  baseURL: API_DOMAIN || 'http://www.mocky.io/v2/5dc43b9c3000008fae347a5f',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -15,14 +16,15 @@ axiosInstance.interceptors.response.use(
   response => response,
   async (error) => {
     const pastRequest = error.config;
-    // if unauthorized
-    if (error.response.status === 401) {
-      const refreshToken = store.state.user.refresh_token;
+    // if unauthorized and the access token exists
+    if (error.response.status === 401 && tokenService.getAccessToken()) {
+      const refreshToken = tokenService.getRefreshToken();
       store.commit('authRequest', TOKEN_REFRESH_REQUEST);
       try {
-        // should I have a check for status code?
-        const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refreshToken });
-        store.commit('refreshSuccess', { status: TOKEN_REFRESH_SUCCESS, access: data.access_token });
+        const { data } = await axiosInstance.post(API_REFRESH_TOKEN,
+          { refresh_token: refreshToken });
+        store.commit('authSuccess', TOKEN_REFRESH_SUCCESS);
+        tokenService.setAccessToken(data.access_token);
         // all future requests will use the new access token.
         axiosInstance.defaults.headers['X-Access-Token'] = data.access_token;
         // redo current failed request with new access token
@@ -31,9 +33,8 @@ axiosInstance.interceptors.response.use(
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
-        axiosInstance.defaults.headers['X-Access-Token'] = '';
-        store.commit('authFailure', TOKEN_REFRESH_FAILURE); // todo: logging error message
-        store.dispatch('logout');
+        delete axiosInstance.defaults.headers['X-Access-Token'];
+        store.dispatch('logout', TOKEN_REFRESH_FAILURE);
       }
     }
     return Promise.reject(error);

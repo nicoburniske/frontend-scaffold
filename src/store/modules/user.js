@@ -1,18 +1,23 @@
 /* eslint-disable no-shadow */
 import axiosInstance from '../../auth/axiosInstance';
-import { API_LOGIN,
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, SIGNUP_REQUEST, API_SIGNUP, SIGNUP_FAILURE, SIGNUP_SUCCESS, LOGOUT_REQUEST, LOGOUT_FAILURE, LOGOUT_SUCCESS } from '../../auth/constants';
+import { API_LOGIN, API_SIGNUP, API_REFRESH_TOKEN,
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
+  SIGNUP_REQUEST, SIGNUP_FAILURE, SIGNUP_SUCCESS,
+  LOGOUT_REQUEST, LOGOUT_SUCCESS,
+  PERSIST_SUCCESS, PERSIST_REQUEST, PERSIST_FAILURE } from '../../auth/constants';
+import { isJWTValid } from '../../auth/jwtUtils';
+import tokenService from '../../auth/tokenService';
 
 const state = {
   status: '',
-  access_token: '',
-  refresh_token: localStorage.getItem('refresh_token') || '',
   user: {},
   isAuthenticated: false,
 };
 
 const getters = {
-
+  /* shouldRefresh(state) {
+    const access = state.access_token && isJWTValid(state.access_token);
+  },  */
 };
 
 const mutations = {
@@ -25,15 +30,9 @@ const mutations = {
   },
   /**
    * Used to set the state status to a success constant. See constants.js.
-   * Payload should have the following properties
-   * - status (the specified constant describing the state of the transaction)
-   * - access (the access token)
-   * - refresh (the refresh token)
    */
-  authSuccess(state, payload) {
-    state.status = payload.status;
-    state.access_token = payload.access;
-    state.refresh_token = payload.refresh;
+  authSuccess(state, status) {
+    state.status = status;
     state.isAuthenticated = true;
   },
   /**
@@ -44,29 +43,16 @@ const mutations = {
     state.isAuthenticated = false;
   },
   /**
-   * Used to initiate a silent refresh and update access_token
-   * Payload should have the following properties
-   * - status (the specified constant describing the state of the transaction)
-   * - access (the access token)
-   */
-  refreshSucess(state, payload) {
-    state.status = payload.status;
-    state.access_token = payload.access;
-    state.isAuthenticated = true;
-  },
-
-  /**
    * Used to indicate a user has logged out.
    * Resets entire vuex module and removes all tokens from localstorage.
    */
-  logout(state) {
-    state.status = LOGOUT_SUCCESS;
-    state.access_token = '';
-    state.refresh_token = '';
+  logout(state, payload = LOGOUT_SUCCESS) {
+    state.status = payload;
     state.user = {};
     state.isAuthenticated = false;
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    delete axiosInstance.defaults.headers['X-Access-Token'];
+    tokenService.removeAccessToken();
+    tokenService.removeRefreshToken();
   },
 };
 
@@ -74,13 +60,11 @@ const actions = {
   async login(context, user) {
     context.commit('authRequest', LOGIN_REQUEST);
     try {
-      console.log('response');
       const response = await axiosInstance.post(API_LOGIN, user);
-      console.log(response);
       if (response.status === 201) {
-        context.commit('authSuccess', { status: LOGIN_SUCCESS,
-          access: response.data.access_token,
-          refresh: response.data.refresh_token });
+        context.commit('authSuccess', LOGIN_SUCCESS);
+        tokenService.setAccessToken(response.data.access_token);
+        tokenService.setRefreshToken(response.data.refresh_token);
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
         // context.commit('setUser');
       } else {
@@ -89,7 +73,7 @@ const actions = {
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
       context.commit('authFailure', LOGIN_FAILURE);
       throw new Error('Login Failed');
     }
@@ -99,16 +83,15 @@ const actions = {
     try {
       const response = await axiosInstance.post(API_SIGNUP, user);
       if (response.status === 201) {
-        context.commit('authSuccess',
-          { status: SIGNUP_SUCCESS,
-            access: response.data.access_token,
-            refresh: response.data.refresh_token });
+        context.commit('authSuccess', SIGNUP_SUCCESS);
+        tokenService.setAccessToken(response.data.access_token);
+        tokenService.setRefreshToken(response.data.refresh_token);
         axiosInstance.defaults.headers['X-Access-Token'] = response.data.access_token;
         // context.commmit('setUser');
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
       context.commit('authFailure', SIGNUP_FAILURE);
       throw new Error('Signup Failed');
     }
@@ -119,14 +102,36 @@ const actions = {
       const response = await axiosInstance.delete(API_LOGIN,
         { access_token: context.state.access_token,
           refresh_token: context.state.refresh_token });
-      if (response.status === 204) {
-        context.commit('logout');
-      } else {
-        throw new Error('Logout Failed');
+      context.commit('logout');
+      if (response.status !== 204) {
+        throw new Error(`Logout failed with response status ${response.status}`);
       }
     } catch (error) {
-      context.commit('authError', LOGOUT_FAILURE);
-      throw new Error('Logout Failed');
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  },
+  async persistUser(context) {
+    const access = tokenService.getAccessToken();
+    const refresh = tokenService.getRefreshToken();
+
+    if (isJWTValid(access)) {
+      context.commit('authSuccess', PERSIST_SUCCESS);
+    } else if (isJWTValid(refresh)) {
+      context.commit('authRequest', PERSIST_REQUEST);
+      try {
+        const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refresh_token: refresh });
+        context.commit('authSuccess', PERSIST_SUCCESS);
+        tokenService.setAccessToken(data.access_token);
+        // all future requests will use the new access token.
+        axiosInstance.defaults.headers['X-Access-Token'] = data.access_token;
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        context.dispatch('logout', PERSIST_FAILURE);
+      }
+    } else {
+      context.commit('logout', PERSIST_FAILURE);
     }
   },
   /**

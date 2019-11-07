@@ -37,11 +37,13 @@ export default {
       this.submitted = true;
       if (this.username && this.password) {
         const user = { username: this.username, password: this.password };
+        console.log(user);
         try {
           await this.$store.dispatch('login', user);
           this.resetInput();
           this.resetSubmit();
-          this.$router.push('/journal'); // should be able to see journal page once authenticated
+          // eslint-disable-next-line no-console
+          this.$router.push('/journal').catch(error => console.log(error, 'unauthorized')); // should be able to see journal page once authenticated
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(`${error} from login form`);

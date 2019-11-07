@@ -1,6 +1,6 @@
 // API urls
-export const API_DOMAIN = '';
-export const API_LOGIN = 'user/login';
+export const API_DOMAIN = 'https://popular-penguin-67.localtunnel.me/';
+export const API_LOGIN = 'api/v1/user/login';
 export const API_REFRESH_TOKEN = 'user/login/refresh';
 export const API_SIGNUP = 'user/signup';
 

@@ -56,7 +56,7 @@ const mutations = {
   },
 
   /**
-   * Used to indicate a user has logged out. 
+   * Used to indicate a user has logged out.
    * Resets entire vuex module and removes all tokens from localstorage.
    */
   logout(state) {
@@ -74,7 +74,9 @@ const actions = {
   async login(context, user) {
     context.commit('authRequest', LOGIN_REQUEST);
     try {
+      console.log('response');
       const response = await axiosInstance.post(API_LOGIN, user);
+      console.log(response);
       if (response.status === 201) {
         context.commit('authSuccess', { status: LOGIN_SUCCESS,
           access: response.data.access_token,

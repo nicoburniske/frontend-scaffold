@@ -13,6 +13,9 @@ export default {
   components: {
     TheNavigation,
   },
+  beforeCreate: function () {
+    this.$store.dispatch('persistUser');
+  },
 };
 </script>
 

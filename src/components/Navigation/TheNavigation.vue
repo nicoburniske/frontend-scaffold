@@ -8,10 +8,28 @@
       <router-link to="/" tag="button">Home</router-link>
       <router-link to="/journal" tag="button">Journal</router-link>
       <router-link to="/notes" tag="button">Notes</router-link>
-      <router-link to="/login" tag="button">Login</router-link>
+      <router-link v-if="!compAuth" to="/login" tag="button">Login</router-link>
+      <button v-else @click="logout">Logout</button>
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex';
+
+export default {
+  methods: {
+    async logout() {
+      await Promise.all([this.$store.dispatch('logout'), this.$router.push('/')]);
+    },
+  },
+  computed: {
+    ...mapState({
+      compAuth: state => state.user.isAuthenticated,
+    }),
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .header {

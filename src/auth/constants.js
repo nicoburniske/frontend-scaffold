@@ -1,7 +1,7 @@
 // API urls
-export const API_DOMAIN = 'localhost:8081/';
+export const API_DOMAIN = '';
 export const API_LOGIN = 'api/v1/user/login';
-export const API_REFRESH_TOKEN = 'user/login/refresh';
+export const API_REFRESH_TOKEN = 'http://www.mocky.io/v2/5dc438b4300000595a347a44'; // 'user/login/refresh';
 export const API_SIGNUP = 'user/signup';
 
 
@@ -23,4 +23,10 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 // Logout states
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'; // never used
+
+// Persist user states
+export const PERSIST_REQUEST = 'PERSIST_REQUEST';
+export const PERSIST_SUCCESS = 'PERSIST_SUCCESS';
+export const PERSIST_FAILURE = 'PERSIST_FAILURE';
+

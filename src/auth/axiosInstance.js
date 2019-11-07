@@ -33,7 +33,6 @@ axiosInstance.interceptors.response.use(
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
-        delete axiosInstance.defaults.headers['X-Access-Token'];
         store.dispatch('logout', TOKEN_REFRESH_FAILURE);
       }
     }

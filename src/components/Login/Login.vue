@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import LoginForm from './LoginForm.vue';
+import SignupForm from './SignupForm.vue';
 
 export default {
   // should we be using nested routes instead of int selectedForm?

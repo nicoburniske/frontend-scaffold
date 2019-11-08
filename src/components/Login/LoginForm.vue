@@ -37,16 +37,14 @@ export default {
       this.submitted = true;
       if (this.username && this.password) {
         const user = { username: this.username, password: this.password };
-        try {
-          await this.$store.dispatch('login', user);
-          this.resetInput();
-          this.resetSubmit();
+        await this.$store.dispatch('login', user);
+        this.$router.push('/notes')
+          .then(() => {
+            this.resetInput();
+            this.resetSubmit();
+          })
           // eslint-disable-next-line no-console
-          this.$router.push('/journal').catch(error => console.log(error, 'unauthorized')); // should be able to see journal page once authenticated
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`${error} from login form`);
-        }
+          .catch(() => console.log('Unauthorized'));
       }
     },
     register() {

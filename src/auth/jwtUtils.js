@@ -1,4 +1,4 @@
-export function getTokenPayload(token) {
+function getTokenPayload(token) {
   try {
     return JSON.parse(atob(token.split('.')[1]));
   } catch (e) {
@@ -6,7 +6,7 @@ export function getTokenPayload(token) {
   }
 }
 
-export function getTokenHeader(token) {
+function getTokenHeader(token) {
   try {
     return JSON.parse(atob(token.split('.')[0]));
   } catch (e) {
@@ -14,7 +14,9 @@ export function getTokenHeader(token) {
   }
 }
 
-export function isJWTValid(jwt) {
+function isJWTValid(jwt) {
   const body = getTokenPayload(jwt);
   return body !== null && Date.now() < body.expiration;
 }
+
+export default { getTokenPayload, getTokenHeader, isJWTValid };

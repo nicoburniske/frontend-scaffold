@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '../components/Home/Home';
-import Journal from '../components/Journal/Journal';
-import Notes from '../components/Notes/Notes';
-import Login from '../components/Login/Login';
+import Home from '../components/Home/Home.vue';
+import Journal from '../components/Journal/Journal.vue';
+import Notes from '../components/Notes/Notes.vue';
+import Login from '../components/Login/Login.vue';
 import store from '../store/store';
 
 Vue.use(Router);
@@ -18,14 +18,14 @@ const routes = [
     path: '/journal',
     name: 'journal',
     component: Journal,
-    meta: {
-      secure: true,
-    },
   },
   {
     path: '/notes',
     name: 'notes',
     component: Notes,
+    meta: {
+      secure: true,
+    },
   },
   {
     path: '/login',

@@ -7,6 +7,7 @@
 // https://markus.oberlehner.net/blog/using-the-google-maps-api-with-vue/
 
 import gmapsInit from './gmaps';
+import locations from './mapMarkers';
 
 export default {
   name: 'TheMap',
@@ -24,6 +25,8 @@ export default {
         map.setCenter(results[0].geometry.location);
         map.fitBounds(results[0].geometry.viewport);
       });
+
+      const markers = locations.map(x => new google.maps.Marker({ ...x, map }));
     } catch (error) {
       console.error(error);
     }
@@ -39,7 +42,7 @@ body {
 }
 
 .App {
-  width: 100vw;
-  height: 100vh;
+  width: 50vw;
+  height: 50vh;
 }
 </style>

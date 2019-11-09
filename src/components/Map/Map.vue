@@ -46,7 +46,6 @@ export default {
       const markers = locations.map((location) => {
           const marker = new google.maps.Marker({ ...location, map });
           marker.addListener('click', () => markerClickHandler(marker));
-
           return marker;
         });
 
@@ -62,11 +61,6 @@ export default {
   methods: { 
     search(){
       console.log('Submit Clicked');
-     var request = {
-          query: 'Museum of Contemporary Art Australia',
-          fields: ['name', 'geometry'],
-        };
-
         service = new google.maps.places.PlacesService(map);
 
         service.findPlaceFromQuery(request, function(results, status) {

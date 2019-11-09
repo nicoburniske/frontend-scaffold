@@ -1,13 +1,11 @@
 <template>
   <div class="locationInputter"> 
-    <h3 id="title">Location Inputter</h3>
+    <h3 id="title"><center>Location Inputter</center></h3>
     <div>
-    <h3>Lat:</h3>
-    <input id="locationTextFieldLat" type="text">
+    <input id="locationTextFieldLat" type="text" placeholder="Enter a Latitude">
     </div>
     <div>
-    <h3>Long:</h3>
-    <input id="locationTextFieldLong" type="text">
+    <input id="locationTextFieldLong" type="text" placeholder="Enter a Longitude">
     </div>
     <div>
     <button id="submitButton" @click="search()">Submit</button>
@@ -28,8 +26,15 @@ export default {
     search(){
       document.getElementById('locationTextFieldLat').value = '';
       document.getElementById('locationTextFieldLong').value = '';
+      
     }
   },
+   mutations: {
+    increment (state) {
+      // mutate state
+      state.count++
+    },
+   },
 }
 </script>
 
@@ -41,24 +46,27 @@ export default {
 }
 #title {
   border-color: darkgrey;
-  border-width: 3px;
-  height: 4vh;
+  height: 6vh;
+  font-size: 2em;
   background-color: darkgrey;
   color: whitesmoke;
+  vertical-align: middle;
 }
 #locationTextFieldLat {
   width: 100%;
   height: 5vh;
+  margin: 2em 0em 0em 0em;
 }
 #locationTextFieldLong {
   width: 100%;
   height: 5vh;
+  margin: 2em 0em 0em 0em;
 }
 #submitButton {
   background-color: #4CAF50;
   border: none;
   color: white;
-  margin: 5em 0em 0em 0em;
+  margin: 2em 0em 0em 0em;
   padding: 16px 32px;
   text-decoration: none;
  

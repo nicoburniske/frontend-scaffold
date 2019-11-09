@@ -24,7 +24,7 @@ const routes = [
     name: 'notes',
     component: Notes,
     meta: {
-      secure: false,
+      secure: true,
     },
   },
   {

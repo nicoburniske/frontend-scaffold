@@ -107,7 +107,7 @@ const actions = {
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.log(error);
     }
   },
   async persistUser(context) {
@@ -137,7 +137,7 @@ const actions = {
       await userApi.getUser();
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('YEEY', error.status);
+      console.error('Could not retrieve user');
     }
   },
 };

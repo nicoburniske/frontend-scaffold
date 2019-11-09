@@ -1,9 +1,9 @@
 // API urls
 export const API_DOMAIN = '';
-export const API_LOGIN = 'http://www.mocky.io/v2/5dc5a6103200007a00769c64'; // 'api/v1/user/login';
-export const API_REFRESH_TOKEN = 'http://www.mocky.io/v2/5dc5a67c3200007200769c65';
-export const API_SIGNUP = 'user/signup';
-export const API_USER = 'http://www.mocky.io/v2/5dc5a6f53200008000769c69'; // 'api/v1/user';
+export const API_LOGIN = 'api/v1/user/login';
+export const API_REFRESH_TOKEN = 'api/v1/user/login/refresh';
+export const API_SIGNUP = 'api/v1/user/signup';
+export const API_USER = 'api/v1/user';
 
 // Request states
 export const TOKEN_REFRESH_REQUEST = 'TOKEN_REFRESH_REQUEST';

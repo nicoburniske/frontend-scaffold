@@ -7,7 +7,7 @@ import axios from 'axios';
 import store from '../../store/store';
 import {
   TOKEN_REFRESH_SUCCESS,
-  API_DOMAIN, TOKEN_REFRESH_REQUEST, API_REFRESH_TOKEN,
+  API_DOMAIN, TOKEN_REFRESH_REQUEST, API_REFRESH_TOKEN, TOKEN_REFRESH_FAILURE,
 } from '../constants';
 import tokenService from '../tokenService';
 
@@ -26,11 +26,16 @@ const refreshStatusCodes = [
 async function refreshToken(pastRequest) {
   const refresh_token = tokenService.getRefreshToken();
   store.commit('authRequest', TOKEN_REFRESH_REQUEST);
-  const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refresh_token });
-  store.commit('authSuccess', TOKEN_REFRESH_SUCCESS);
-  tokenService.setAccessToken(data.access_token);
-  pastRequest.response.config.headers['X-Access-Token'] = data.access_token;
-  return Promise.resolve();
+  try {
+    const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refresh_token });
+    store.commit('authSuccess', TOKEN_REFRESH_SUCCESS);
+    tokenService.setAccessToken(data.access_token);
+    pastRequest.response.config.headers['X-Access-Token'] = data.access_token;
+    return Promise.resolve();
+  } catch (error) {
+    store.commit('authFailure', TOKEN_REFRESH_FAILURE);
+    return Promise.reject();
+  }
 }
 
 axiosInstance.interceptors.request.use(request => {
@@ -39,20 +44,20 @@ axiosInstance.interceptors.request.use(request => {
 });
 
 // use response interceptor for silent refresh
-function createInterceptor() {
+function createInterceptor(onRefresh) {
   const id = axiosInstance.interceptors.response.use(
     response => response,
     error => {
       // eslint-disable-next-line no-console
-      console.log('fuck');
-      // if status code is included in refreshStatusCodes
+      console.log('interceptor called');
       if (error.response && refreshStatusCodes.includes(error.response.status)) {
         axiosInstance.interceptors.response.eject(id);
         // attempt to refresh token
-        const refreshCall = refreshToken(error);
+        const refreshCall = onRefresh(error);
         // queue up all requests while token is refreshing
         const refreshRequestQueueId = axiosInstance.interceptors.request
           .use(request => refreshCall.then(() => request));
+        // excecute
         return refreshCall
           .then(() => {
             axiosInstance.interceptors.request.eject(refreshRequestQueueId);
@@ -61,8 +66,7 @@ function createInterceptor() {
           .catch(err => {
             axiosInstance.interceptors.request.eject(refreshRequestQueueId);
             return Promise.reject(err);
-          })
-          .finally(() => createInterceptor());
+          });
       }
       return Promise.reject(error);
     },
@@ -70,6 +74,6 @@ function createInterceptor() {
   return axiosInstance;
 }
 
-createInterceptor();
+createInterceptor(refreshToken);
 
 export default axiosInstance;

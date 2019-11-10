@@ -39,12 +39,16 @@ const router = new Router({
   routes,
 });
 
-// navigation guard
-// will have to be modified for admin privileges
+/**
+ * navigation guard. Uses Vuex user module's isAuthenticated state to verify if
+ * a user should be able to visit certain pages.
+ *
+ * TODO: will have to be modified for admin privileges
+ */
 router.beforeEach((to, from, next) => {
   // if any of the routes exposed by the route object 'to' are secure
   if (to.matched.some(record => record.meta.secure)) {
-    if (store.state.user.isAuthenticated) {
+    if (store.state.user.isAuthenticated) { // if user is currently authenticated
       next();
       return;
     }

@@ -1,6 +1,11 @@
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
+/**
+ * MODULE SUMMARY
+ * Used to write, read, and remove tokens from localStorage. Makes our implementation a little
+ * more flexible in case we decide to change this.
+ */
 const tokenService = {
   getAccessToken() {
     return localStorage.getItem(ACCESS_TOKEN_KEY);

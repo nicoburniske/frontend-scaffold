@@ -46,10 +46,10 @@ function addInterceptorCode(code) {
  * @param {*} pastRequest that latest failed request that resulted in a response code
  * contained in refreshStatusCodes.
  */
-async function refreshToken(pastRequest) {
+export async function refreshToken(instance, pastRequest) {
   const refresh_token = tokenService.getRefreshToken();
   try {
-    const { data } = await axiosInstance.post(API_REFRESH_TOKEN, { refresh_token });
+    const { data } = await instance.post(API_REFRESH_TOKEN, { refresh_token });
     tokenService.setAccessToken(data.access_token);
     pastRequest.response.config.headers['X-Access-Token'] = data.access_token;
     return Promise.resolve();
@@ -59,14 +59,15 @@ async function refreshToken(pastRequest) {
 }
 
 /**
- * Interceptor for outgoing requests.
+ * Creates request interceptor for outgoing requests.
  * Ensures that the request has the latest available access_token.
  */
-axiosInstance.interceptors.request.use(request => {
-  request.headers['X-Access-Token'] = tokenService.getAccessToken();
-  return request;
-});
-
+export function createRequestInterceptor(instance) {
+  instance.interceptors.request.use(request => {
+    request.headers['X-Access-Token'] = tokenService.getAccessToken();
+    return request;
+  });
+}
 /**
  * Interceptor for request responses. COMPLICATED AND REQUIRES TESTING.
  * All JWT refresh logic is encapsulated here.
@@ -91,18 +92,16 @@ axiosInstance.interceptors.request.use(request => {
  * @param {*} instance instance of axios to include interceptor.
  * @param {*} onRefresh function to be called on failed request.
  */
-export function createInterceptor(instance, onRefresh) {
+export function createResponseInterceptor(instance, onRefresh) {
   const interceptorID = instance.interceptors.response.use(
     response => response,
     async (error) => {
-      // eslint-disable-next-line no-console
-      console.log('interceptor called');
       if (error.response && refreshStatusCodes.includes(error.response.status)) {
         instance.interceptors.response.eject(interceptorID);
         let refreshRequestQueueId;
         try {
           // attempt to refresh token
-          const refreshCall = onRefresh(error);
+          const refreshCall = onRefresh(instance, error);
           // queue up all requests while token is refreshing
           refreshRequestQueueId = instance.interceptors.request
             .use(request => refreshCall.then(() => request));
@@ -114,7 +113,7 @@ export function createInterceptor(instance, onRefresh) {
           instance.interceptors.request.eject(refreshRequestQueueId);
           return Promise.reject(failedRefresh);
         } finally {
-          createInterceptor(instance, onRefresh);
+          createResponseInterceptor(instance, onRefresh);
         }
       }
       return Promise.reject(error);
@@ -123,6 +122,8 @@ export function createInterceptor(instance, onRefresh) {
   return axiosInstance; // should we keep this?
 }
 
-createInterceptor(axiosInstance, refreshToken);
+// init
+createRequestInterceptor(axiosInstance);
+createResponseInterceptor(axiosInstance, refreshToken);
 
 export default axiosInstance;

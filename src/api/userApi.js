@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axios/axiosInstance';
 import {
   API_LOGIN, API_SIGNUP, API_REFRESH_TOKEN, API_USER,
 } from './endpoints';

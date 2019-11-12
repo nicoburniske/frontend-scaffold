@@ -7,9 +7,10 @@
         <input v-model="username" @focus="resetSubmit" type="text" placeholder="Username or Email" />
         <input v-model="password" @focus="resetSubmit" type="password" placeholder="Password"/>
       </div>
-      <div v-show="(!username || !password) && submitted">Enter a username and password </div>
+      <p v-if="(!username || !password) && submitted">Enter a username and password </p>
+      <p v-if="error && submitted">{{error}}</p>
       <button @click="submit"> Login </button>
-      <button @click="$emit('sign-up')"> Sign Up </button>
+      <router-link to="/signup" tag="button"> Signup </router-link>
       <div> <button @click="register"> Forgot Password </button> </div>
     </div>
   </div>
@@ -23,6 +24,7 @@ export default {
       username: '',
       password: '',
       submitted: false,
+      error: '',
     };
   },
   methods: {
@@ -32,19 +34,23 @@ export default {
     },
     resetSubmit() {
       this.submitted = false;
+      this.error = '';
+    },
+    inputValid() {
+      return this.username && this.password;
     },
     async submit() {
       this.submitted = true;
-      if (this.username && this.password) {
+      if (this.inputValid()) {
         const user = { username: this.username, password: this.password };
-        await this.$store.dispatch('login', user);
-        this.$router.push('/notes')
-          .then(() => {
-            this.resetInput();
-            this.resetSubmit();
-          })
-          // eslint-disable-next-line no-console
-          .catch(() => console.log('Unauthorized'));
+        try {
+          await this.$store.dispatch('login', user);
+          this.resetInput();
+          this.resetSubmit();
+          this.$router.push('/notes');
+        } catch (error) {
+          this.error = `Incorrect Username/Password: ${error.message}`;
+        }
       }
     },
     register() {

@@ -8,7 +8,7 @@
       <router-link to="/" tag="button">Home</router-link>
       <router-link to="/journal" tag="button">Journal</router-link>
       <router-link to="/notes" tag="button">Notes</router-link>
-      <router-link v-if="!compAuth" to="/login" tag="button">Login</router-link>
+      <router-link v-if="!isAuth" to="/login" tag="button">Login</router-link>
       <button v-else @click="logout">Logout</button>
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     ...mapState({
-      compAuth: state => state.user.isAuthenticated,
+      isAuth: state => state.user.isAuthenticated,
     }),
   },
 };

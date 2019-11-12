@@ -16,10 +16,11 @@
         <!-- eslint-disable-next-line max-len -->
         <input v-model="password2" @focus="resetSubmit" type="password" placeholder="Re-type Password">
       </div>
+      <p v-if="this.serverError">{{this.serverError}}</p>
     </div>
     <div>
       <button @click="signup"> Signup </button>
-      <button @click="$emit('login')"> Login </button>
+      <router-link to="/login" tag="button"> Login </router-link>
     </div>
   </div>
 </template>
@@ -34,6 +35,7 @@ export default {
       password1: '',
       password2: '',
       inputError: ['', '', ''],
+      serverError: '',
       submitted: false,
     };
   },
@@ -47,6 +49,7 @@ export default {
       this.password1 = '';
       this.password2 = '';
       this.inputError = ['', '', ''];
+      this.serverError = '';
     },
     validate() {
       this.validateUser();
@@ -84,20 +87,16 @@ export default {
     },
     async signup() {
       this.submitted = true;
+      this.serverError = '';
       this.validate();
-      // eslint-disable-next-line no-console
-      console.log('validating');
       if (this.inputError.reduce((acc, curr) => acc && curr === '', true)) {
-        // eslint-disable-next-line no-console
-        console.log('valid input');
         const user = { username: this.username, email: this.email, password: this.password1 };
         try {
           await this.$store.dispatch('signup', user);
           this.resetInput();
           this.$router.push('/journal');
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`${error} from signup form`);
+          this.serverError = error.message;
         }
       }
     },

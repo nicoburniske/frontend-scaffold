@@ -175,6 +175,7 @@ describe('axios interceptor tests', () => {
 
       // execute
       try {
+        // using first and second for debugging purposes. actual url doesn't matter.
         const response = await testAxios.get('first').then(async data => [data, await testAxios.get('second')]);
         // console.log(response[1].data.user.username, response[1].data.requestHeaders['X-Access-Token']);
         expect(localStorage.getItem('access_token')).toBe('an access token');
@@ -185,6 +186,20 @@ describe('axios interceptor tests', () => {
         done();
       } catch (error) {
         done.fail(error);
+      }
+    });
+  test('6. testing that interceptor doesn\'t call if error is not 401',
+    async (done) => {
+      expect.assertions(1);
+      // setup
+      mock.onGet().replyOnce(400, {});
+
+      try {
+        await testAxios.get(API_USER);
+        done.fail('Shold throw an error');
+      } catch (error) {
+        expect(mock.history.get.length).toBe(1);
+        done();
       }
     });
 });

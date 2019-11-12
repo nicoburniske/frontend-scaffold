@@ -3,7 +3,6 @@
 
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { pathToFileURL } from 'url';
 import { refreshToken, createRequestInterceptor, createResponseInterceptor } from '../../../src/axios/axiosInstance';
 import { API_USER } from '../../../src/api/endpoints';
 
@@ -125,7 +124,7 @@ describe('axios interceptor tests', () => {
       localStorage.setItem('access_token', 'first access token');
       const response1 = await testAxios.get(API_USER);
       expect(response1.data.requestHeaders['X-Access-Token']).toBe('first access token');
-      
+
       localStorage.setItem('access_token', 'second access token');
       const response2 = await testAxios.get(API_USER);
       expect(response2.data.requestHeaders['X-Access-Token']).toBe('second access token');

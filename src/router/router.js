@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import Home from '../components/Home/Home.vue';
 import Journal from '../components/Journal/Journal.vue';
 import Notes from '../components/Notes/Notes.vue';
-import Login from '../components/Login/Login.vue';
+import LoginForm from '../components/Login/LoginForm.vue';
+import SignupForm from '../components/Login/SignupForm.vue';
 import store from '../store/store';
 
 Vue.use(Router);
@@ -30,7 +31,12 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: LoginForm,
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignupForm,
   },
 ];
 

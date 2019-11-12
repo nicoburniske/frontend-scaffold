@@ -25,6 +25,7 @@ describe('axios interceptor tests', () => {
 
   test('1. failed request with 401 response, successful refresh, and successful rerequest',
     async (done) => {
+      expect.assertions(3);
       // setup
       mock.onGet().replyOnce(401, {})
         .onPost().replyOnce(201, { access_token: 'an access token' })
@@ -50,13 +51,11 @@ describe('axios interceptor tests', () => {
      */
   test('2. failed request with 401 response, failed refresh with 401 response, no loop, interceptor remains intact',
     async (done) => {
+      expect.assertions(5);
       // pt. 1
       // setup
       mock.onGet().replyOnce(401, {}) // initial request is unauthorized
         .onPost().replyOnce(401, {}); // token refresh request returns 401
-
-      expect.assertions(5);
-
       // execute
       await testAxios.get(API_USER).catch(() => {
         expect(mock.history.get.length).toBe(1);
@@ -72,7 +71,6 @@ describe('axios interceptor tests', () => {
             user: { username: 'Nick' },
             requestHeaders: config.headers,
           }]);
-
       // execute
       try {
         const response = await testAxios.get(API_USER);
@@ -120,17 +118,14 @@ describe('axios interceptor tests', () => {
 
   test('4. ensure that request interceptor is including latest access_token in request header',
     async (done) => {
+      expect.assertions(3);
       // setup
       mock.onGet().reply(config => [200, { requestHeaders: config.headers }]);
-
       // execute
-      expect.assertions(3);
-      // console.log(localStorage.getItem('access_token'));
       localStorage.setItem('access_token', 'first access token');
       const response1 = await testAxios.get(API_USER);
       expect(response1.data.requestHeaders['X-Access-Token']).toBe('first access token');
-
-      // console.log(localStorage.getItem('access_token'));
+      
       localStorage.setItem('access_token', 'second access token');
       const response2 = await testAxios.get(API_USER);
       expect(response2.data.requestHeaders['X-Access-Token']).toBe('second access token');

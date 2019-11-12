@@ -78,9 +78,8 @@ const actions = {
         throw new Error(`Login failed with response status ${response.status}`);
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
       context.commit('authFailure', LOGIN_FAILURE);
+      throw error;
     }
   },
   /**
@@ -103,9 +102,8 @@ const actions = {
         throw new Error(`Signup failed with response status ${response.status}`);
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
       context.commit('authFailure', SIGNUP_FAILURE);
+      throw error;
     }
   },
   /**

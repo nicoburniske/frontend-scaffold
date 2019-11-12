@@ -54,7 +54,7 @@ export async function refreshToken(instance, pastRequest) {
     pastRequest.response.config.headers['X-Access-Token'] = data.access_token;
     return Promise.resolve();
   } catch (error) {
-    return Promise.reject();
+    return Promise.reject('Original request failed. Refresh attempted and failed');
   }
 }
 

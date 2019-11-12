@@ -16,14 +16,6 @@ const refreshStatusCodes = [
 ];
 
 /**
- * Function to add an http status code to the refreshStatusCodes array.
- * @param {*} code http status code to be added.
- */
-function addInterceptorCode(code) {
-  refreshStatusCodes.push(code);
-}
-
-/**
  * The function that will be passed into createInterceptor as an argument.
  * @param {*} pastRequest that latest failed request that resulted in a response code
  * contained in refreshStatusCodes.

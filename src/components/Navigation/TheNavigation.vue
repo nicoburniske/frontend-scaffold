@@ -8,9 +8,28 @@
       <router-link to="/" tag="button">Home</router-link>
       <router-link to="/journal" tag="button">Journal</router-link>
       <router-link to="/notes" tag="button">Notes</router-link>
+      <router-link v-if="!isAuth" to="/login" tag="button">Login</router-link>
+      <button v-else @click="logout">Logout</button>
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex';
+
+export default {
+  methods: {
+    async logout() {
+      await Promise.all([this.$store.dispatch('logout'), this.$router.push('/')]);
+    },
+  },
+  computed: {
+    ...mapState({
+      isAuth: state => state.user.isAuthenticated,
+    }),
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .header {
@@ -26,8 +45,8 @@
   }
   .navlinks {
     display: flex;
-    justify-content: space-around;
-    width: 25%;
+    justify-content: space-between;
+    width: 45%;
     button {
       display: block;
       width: 5em;

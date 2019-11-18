@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import NoteDisplay from './NoteDisplay';
+import NoteDisplay from './NoteDisplay.vue';
 
 export default {
   name: 'NotesDisplay',

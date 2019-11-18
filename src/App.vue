@@ -13,6 +13,9 @@ export default {
   components: {
     TheNavigation,
   },
+  beforeCreate() {
+    this.$store.dispatch('persistUser');
+  },
 };
 </script>
 
@@ -39,4 +42,3 @@ html{
   background-color: var(--body-color);
 }
 </style>
-

@@ -21,7 +21,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import NotesForm from '../NotesForm/NotesForm';
+import NotesForm from '../NotesForm/NotesForm.vue';
 
 export default {
   name: 'note-display',

@@ -7,8 +7,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import NotesForm from './NotesForm/NotesForm';
-import NotesDisplay from './NoteDisplay/NotesDisplay';
+import NotesForm from './NotesForm/NotesForm.vue';
+import NotesDisplay from './NoteDisplay/NotesDisplay.vue';
 
 export default {
   name: 'Notes',
